@@ -231,7 +231,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = "PongGame-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				"OTHER_LDFLAGS[sdk=iphoneos*][arch=*]" = (
 					"\"$(CINDER_PATH)/lib/libcinder-iphone.a\"",
 					"-lz",
@@ -241,6 +241,7 @@
 					"-lz",
 				);
 				PRODUCT_NAME = PongGame;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
