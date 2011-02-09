@@ -2,9 +2,9 @@
 {
 	00CFDFDF11384CC60091E310 /* PongGameApp.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1090, 1833}}";
-			sepNavSelRange = "{2029, 0}";
-			sepNavVisRange = "{2107, 1147}";
+			sepNavIntBoundsRect = "{{0, 0}, {950, 2249}}";
+			sepNavSelRange = "{840, 0}";
+			sepNavVisRange = "{2349, 796}";
 		};
 	};
 	1D6058900D05DD3D006BFB54 /* PongGame */ = {
@@ -16,7 +16,7 @@
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeBuildConfigurationName = Debug;
 		activeExecutable = 4F99D3931302F084000E5BF9 /* PongGame */;
-		activeSDKPreference = iphonesimulator4.2;
+		activeSDKPreference = iphoneos4.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* PongGame */;
 		codeSenseManager = 4F99D3C31302F0D7000E5BF9 /* Code sense */;
 		executables = (
@@ -73,6 +73,7 @@
 		perUserProjectItems = {
 			4F91017A130321EB00114D0E /* PBXTextBookmark */ = 4F91017A130321EB00114D0E /* PBXTextBookmark */;
 			4F91018B1303223900114D0E /* PBXTextBookmark */ = 4F91018B1303223900114D0E /* PBXTextBookmark */;
+			4F910192130342A700114D0E /* PBXTextBookmark */ = 4F910192130342A700114D0E /* PBXTextBookmark */;
 			4F99D3C81302F1EB000E5BF9 = 4F99D3C81302F1EB000E5BF9 /* PBXBookmark */;
 			4F99D3C91302F1EB000E5BF9 = 4F99D3C91302F1EB000E5BF9 /* PBXTextBookmark */;
 			4F99D3D81302F26F000E5BF9 = 4F99D3D81302F26F000E5BF9 /* PBXTextBookmark */;
@@ -103,7 +104,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 94";
 		rLen = 0;
-		rLoc = 2029;
+		rLoc = 2960;
 		rType = 0;
 		vrLen = 1147;
 		vrLoc = 2107;
@@ -113,10 +114,20 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 94";
 		rLen = 0;
-		rLoc = 2029;
+		rLoc = 2960;
 		rType = 0;
 		vrLen = 1147;
 		vrLoc = 2107;
+	};
+	4F910192130342A700114D0E /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
+		name = "PongGameApp.cpp: 37";
+		rLen = 0;
+		rLoc = 840;
+		rType = 0;
+		vrLen = 796;
+		vrLoc = 2349;
 	};
 	4F99D3931302F084000E5BF9 /* PongGame */ = {
 		isa = PBXExecutable;
@@ -171,7 +182,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 55";
 		rLen = 0;
-		rLoc = 1680;
+		rLoc = 2902;
 		rType = 0;
 		vrLen = 788;
 		vrLoc = 960;
@@ -181,7 +192,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 55";
 		rLen = 0;
-		rLoc = 1680;
+		rLoc = 2902;
 		rType = 0;
 		vrLen = 788;
 		vrLoc = 960;
@@ -191,7 +202,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 55";
 		rLen = 0;
-		rLoc = 1680;
+		rLoc = 2902;
 		rType = 0;
 		vrLen = 788;
 		vrLoc = 960;
@@ -201,7 +212,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 55";
 		rLen = 0;
-		rLoc = 1680;
+		rLoc = 2902;
 		rType = 0;
 		vrLen = 788;
 		vrLoc = 960;
@@ -211,7 +222,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 70";
 		rLen = 0;
-		rLoc = 2449;
+		rLoc = 3073;
 		rType = 0;
 		vrLen = 761;
 		vrLoc = 936;
@@ -221,7 +232,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 72";
 		rLen = 0;
-		rLoc = 2490;
+		rLoc = 3114;
 		rType = 0;
 		vrLen = 763;
 		vrLoc = 942;
@@ -231,7 +242,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 36";
 		rLen = 0;
-		rLoc = 1294;
+		rLoc = 2454;
 		rType = 0;
 		vrLen = 763;
 		vrLoc = 921;
@@ -241,7 +252,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 36";
 		rLen = 0;
-		rLoc = 1294;
+		rLoc = 2454;
 		rType = 0;
 		vrLen = 761;
 		vrLoc = 634;
@@ -251,7 +262,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 71";
 		rLen = 0;
-		rLoc = 2490;
+		rLoc = 3114;
 		rType = 0;
 		vrLen = 778;
 		vrLoc = 921;
@@ -278,7 +289,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 31";
 		rLen = 0;
-		rLoc = 959;
+		rLoc = 2119;
 		rType = 0;
 		vrLen = 954;
 		vrLoc = 0;
@@ -288,7 +299,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 84";
 		rLen = 0;
-		rLoc = 2705;
+		rLoc = 3329;
 		rType = 0;
 		vrLen = 911;
 		vrLoc = 1071;
@@ -298,7 +309,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 81";
 		rLen = 0;
-		rLoc = 2705;
+		rLoc = 3329;
 		rType = 0;
 		vrLen = 842;
 		vrLoc = 1086;
@@ -335,7 +346,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 82";
 		rLen = 0;
-		rLoc = 2705;
+		rLoc = 3329;
 		rType = 0;
 		vrLen = 850;
 		vrLoc = 1080;
@@ -345,7 +356,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 84";
 		rLen = 0;
-		rLoc = 2705;
+		rLoc = 3329;
 		rType = 0;
 		vrLen = 850;
 		vrLoc = 1080;
@@ -355,7 +366,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 84";
 		rLen = 0;
-		rLoc = 2705;
+		rLoc = 3329;
 		rType = 0;
 		vrLen = 844;
 		vrLoc = 1080;
@@ -365,7 +376,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 87";
 		rLen = 0;
-		rLoc = 2707;
+		rLoc = 3331;
 		rType = 0;
 		vrLen = 869;
 		vrLoc = 1082;

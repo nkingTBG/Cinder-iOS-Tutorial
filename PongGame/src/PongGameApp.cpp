@@ -22,18 +22,61 @@ public:
 	virtual void	mouseDrag( MouseEvent event );
 	virtual void	startUp();
 	
+	virtual void	boundaries();
+	virtual void	collisions();
+	
 	Vec2f pos, vel, acc;
 	float wid, hei, rad;
 	Vec2f paddleCenter;
 	float paddleWidth, paddleHeight;
 	Vec2f touchArea;
-	bool start;
+	bool start, colliding;
+	float paddleLast;
 };
+
+void PongGame::collisions(){
+	if(pos.y > hei - rad - touchArea.y - paddleHeight * 3 && abs(pos.x - paddleCenter.x) < paddleWidth * 0.9f && colliding == false ){
+		colliding = true;
+		Vec2f collisionDir = Vec2f(paddleCenter - vel);
+		collisionDir.normalize();
+		Vec2f paddVec = Vec2f(paddleCenter.x - paddleLast , -10);
+		Vec2f collisionVel = Vec2f(paddVec - vel);
+		float totalForce = collisionDir.x * collisionVel.x + collisionDir.y * collisionVel.y;
+		Vec2f velocityChange = collisionDir * totalForce;
+		collisionVel -= velocityChange;
+		vel = collisionVel + paddVec;
+		paddVec += velocityChange; 
+	}
+}
+
+void PongGame::boundaries(){
+	if(pos.x < 0 + rad){
+		vel.x *= -1.0f;
+		pos.x = 0 + rad;
+	} else if(pos.x > wid - rad){
+		vel.x *= -1.0f;
+		pos.x = wid - rad;
+	}
+	
+	if(pos.y < 0 + rad){
+		vel.y *= -1.0f;
+		pos.y = 0 + rad;
+	} else if (pos.y > hei -touchArea.y + rad){
+		startUp();
+	}
+	
+	if(paddleCenter.x < paddleWidth){
+		paddleCenter.x = paddleWidth;
+	} else if (paddleCenter.x > wid - paddleWidth) {
+		paddleCenter.x = wid - paddleWidth;
+	}
+}
 
 void PongGame::startUp(){
 	pos = Vec2f(0,0);
 	vel = Vec2f( Rand::randFloat(10), 10 );
 	start = true;
+	colliding = false;
 }
 
 void PongGame::setup()
@@ -58,6 +101,7 @@ void PongGame::resize( ResizeEvent event )
 void PongGame::mouseDown( MouseEvent event )
 {
 	if(event.getY() > hei - touchArea.y){
+		paddleLast = paddleCenter.x;
 		paddleCenter.x = event.getPos().x;
 	}
 	if(start){
@@ -68,6 +112,7 @@ void PongGame::mouseDown( MouseEvent event )
 void PongGame::mouseDrag( MouseEvent event )
 {
 	if(event.getY() > hei - touchArea.y){
+		paddleLast = paddleCenter.x;
 		paddleCenter.x = event.getPos().x;
 	}
 }
@@ -79,30 +124,8 @@ void PongGame::update()
 	} else{
 		vel += acc;
 		pos += vel;
-		
-		if(pos.x < 0 + rad){
-			vel.x *= -1.0f;
-			pos.x = 0 + rad;
-		} else if(pos.x > wid - rad){
-			vel.x *= -1.0f;
-			pos.x = wid - rad;
-		}
-		
-		if(pos.y < 0 + rad){
-			vel.y *= -1.0f;
-			pos.y = 0 + rad;
-		} else if (pos.y > hei - rad - touchArea.y - paddleHeight * 3 && abs(pos.x - paddleCenter.x) < paddleWidth * 0.9f) {
-			vel.y *= -1.0f;
-			pos.y = hei - rad - touchArea.y - paddleHeight * 3;
-		} else if (pos.y > hei -touchArea.y + rad){
-			startUp();
-		}
-		
-		if(paddleCenter.x < paddleWidth){
-			paddleCenter.x = paddleWidth;
-		} else if (paddleCenter.x > wid - paddleWidth) {
-			paddleCenter.x = wid - paddleWidth;
-		}
+		boundaries();
+		collisions();
 	}
 }
 
