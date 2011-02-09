@@ -272,8 +272,9 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>9</integer>
-									<integer>8</integer>
+									<integer>3</integer>
+									<integer>2</integer>
+									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
@@ -326,10 +327,12 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>4F99D3F21302F8D8000E5BF9</string>
+										<string>4F99D43F1302FE51000E5BF9</string>
 										<key>history</key>
 										<array>
-											<string>4F99D3C81302F1EB000E5BF9</string>
+											<string>4F99D4201302FB40000E5BF9</string>
+											<string>4F99D4331302FDED000E5BF9</string>
+											<string>4F99D4351302FDED000E5BF9</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -527,11 +530,10 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>4F99D3F31302F8D8000E5BF9</string>
 		<string>4F99D3F41302F8D8000E5BF9</string>
 		<string>4F99D3F51302F8D8000E5BF9</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
+		<string>1C78EAAD065D492600B07095</string>
 		<string>4F99D3CD1302F1EB000E5BF9</string>
 		<string>/Users/noah/Documents/cinderProjectsTBG/iOS/PongGame/xcode/PongGame.xcodeproj</string>
 	</array>
@@ -557,7 +559,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string></string>
+								<string>PongGameApp.cpp</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -870,6 +872,8 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -880,18 +884,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {650, 209}}</string>
+								<string>{{0, 0}, {646, 438}}</string>
 								<key>RubberWindowFrame</key>
-								<string>226 732 650 250 0 0 1680 1028 </string>
+								<string>226 503 646 479 0 0 1680 1028 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXDebugCLIModule</string>
 							<key>Proportion</key>
-							<string>209pt</string>
+							<string>438pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>209pt</string>
+					<string>438pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -911,11 +915,11 @@
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.consoleV3</string>
 			<key>WindowString</key>
-			<string>226 732 650 250 0 0 1680 1028 </string>
+			<string>226 503 646 479 0 0 1680 1028 </string>
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>Identifier</key>
