@@ -5,9 +5,7 @@
 #include "cinder/gl/Texture.h"
 #include "cinder/Camera.h"
 #include "cinder/Rand.h"
-#include <iostream>
-#include <sstream>
-#include <fstream>
+#include "cinder/gl/Fbo.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -27,19 +25,22 @@ public:
 	float wid, hei, rad;
 	Vec2f paddleCenter;
 	float paddleWidth, paddleHeight;
+	Vec2f touchArea;
 };
 
 void PongGame::setup()
 {
 	pos = Vec2f(0,0);
-	vel = Vec2f( Rand::randFloat(2),Rand::randFloat(2) );
+	vel = Vec2f( Rand::randFloat(10), 10 );
 	acc = Vec2f(0,0);
 	wid = getWindowWidth();
 	hei = getWindowHeight();
 	rad = 25.0f;
+	touchArea = Vec2f(getWindowWidth(), 100);
 	paddleHeight = 10.0f;
-	paddleCenter = Vec2f(getWindowCenter().x,getWindowHeight() - paddleHeight * 2);
+	paddleCenter = Vec2f(getWindowCenter().x,getWindowHeight() - paddleHeight * 2 - touchArea.y);
 	paddleWidth = 80.0f;
+	
 }
 
 void PongGame::resize( ResizeEvent event )
@@ -50,12 +51,16 @@ void PongGame::resize( ResizeEvent event )
 
 void PongGame::mouseDown( MouseEvent event )
 {
-	paddleCenter.x = event.getPos().x;
+	if(event.getY() > hei - touchArea.y){
+		paddleCenter.x = event.getPos().x;
+	}
 }
 
 void PongGame::mouseDrag( MouseEvent event )
 {
-	paddleCenter.x = event.getPos().x;
+	if(event.getY() > hei - touchArea.y){
+		paddleCenter.x = event.getPos().x;
+	}
 }
 
 void PongGame::update()
@@ -74,9 +79,18 @@ void PongGame::update()
 	if(pos.y < 0 + rad){
 		vel.y *= -1.0f;
 		pos.y = 0 + rad;
-	} else if(pos.y > hei - rad){
+	} else if (pos.y > hei - rad - touchArea.y - paddleHeight * 3 && abs(pos.x - paddleCenter.x) < paddleWidth) {
 		vel.y *= -1.0f;
-		pos.y = hei - rad;
+		pos.y = hei - rad - touchArea.y - paddleHeight * 3;
+	} else if (pos.y > hei -touchArea.y + rad){
+		pos = Vec2f(0,0);
+		vel = Vec2f( Rand::randFloat(10), 10 );
+	}
+	
+	if(paddleCenter.x < paddleWidth){
+		paddleCenter.x = paddleWidth;
+	} else if (paddleCenter.x > wid - paddleWidth) {
+		paddleCenter.x = wid - paddleWidth;
 	}
 }
 
@@ -85,16 +99,11 @@ void PongGame::draw()
 	clear();
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
 	setMatricesWindow( getWindowSize() );
+	
 	color( ColorAf(0,0,0,0.85f) );
-	drawSolidRect( Rectf( 0, 0, wid, hei) );
-	color(Colorf(1,1,1));
+	drawSolidRect( Rectf( 0, 0, wid, hei - touchArea.y) );
 	
-	
-	string line = "test";
-	
-	drawStringCentered( line, getWindowCenter(), Colorf(1,1,1), Font( "Gill Sans", 60 ) );
 	cout << getWindowCenter();
 	//gl::drawStringCentered("Hello World", Vec2f(0, hei));
 	color(Colorf(1,0,0));
@@ -103,8 +112,9 @@ void PongGame::draw()
 	color(Colorf(1,1,1));
 	
 	drawSolidRect( Rectf(paddleCenter.x - paddleWidth, paddleCenter.y - paddleHeight, paddleCenter.x + paddleWidth, paddleCenter.y + paddleHeight ) );
-	
-	
+	color( Colorf(0.2f, 0.2f, 0.5f) );
+	drawSolidRect( Rectf(wid, hei, 0, hei - touchArea.y  ) );
+	drawString( "Touch Area", Vec2f(50, hei - touchArea.y), Colorf(0.3f, 0.3f, 0.65f), Font( "Gill Sans", 40 ) );
 }
 
 CINDER_APP_COCOA_TOUCH( PongGame, RendererGl )
