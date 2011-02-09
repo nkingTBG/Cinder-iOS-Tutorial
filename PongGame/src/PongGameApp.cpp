@@ -28,25 +28,55 @@ public:
 	Vec2f pos, vel, acc;
 	float wid, hei, rad;
 	Vec2f paddleCenter;
-	float paddleWidth, paddleHeight;
+	
 	Vec2f touchArea;
 	bool start, colliding;
 	float paddleLast;
 };
 
 void PongGame::collisions(){
-	if(pos.y > hei - rad - touchArea.y - paddleHeight * 3 && abs(pos.x - paddleCenter.x) < paddleWidth * 0.9f && colliding == false ){
+	
+	float minDistanceSQ	= 200*200 + rad * rad;
+	float distanceSQ		= (paddleCenter.x - pos.x)*(paddleCenter.x - pos.x) + (paddleCenter.y - pos.y)*(paddleCenter.y - pos.y);
+	
+	
+	if( distanceSQ <= minDistanceSQ && colliding == false ){
 		colliding = true;
 		Vec2f collisionDir = Vec2f(paddleCenter - vel);
+		
+		if(abs(collisionDir.x / collisionDir.y) > 4){
+			collisionDir.y = abs(collisionDir.x) / -4;
+		}
+		
 		collisionDir.normalize();
-		Vec2f paddVec = Vec2f(paddleCenter.x - paddleLast , -10);
-		Vec2f collisionVel = Vec2f(paddVec - vel);
+		
+		float paddleSpeed = paddleCenter.x - paddleLast;
+		if(paddleSpeed > 14){
+			paddleSpeed = 14;
+		}
+		
+		Vec2f paddleVel;
+		
+		if(paddleSpeed < 1){
+			paddleVel = Vec2f( paddleSpeed , vel.y * -0.7f - 3);
+		} else {
+			paddleVel = Vec2f( paddleSpeed , -10 );
+		}
+		
+		
+
+		
+		
+		Vec2f collisionVel = Vec2f(paddleVel - vel);
 		float totalForce = collisionDir.x * collisionVel.x + collisionDir.y * collisionVel.y;
 		Vec2f velocityChange = collisionDir * totalForce;
 		collisionVel -= velocityChange;
-		vel = collisionVel + paddVec;
-		paddVec += velocityChange; 
+		vel = collisionVel + paddleVel;
+		paddleVel += velocityChange; 
+	} else {
+		colliding = false;
 	}
+
 }
 
 void PongGame::boundaries(){
@@ -63,12 +93,6 @@ void PongGame::boundaries(){
 		pos.y = 0 + rad;
 	} else if (pos.y > hei -touchArea.y + rad){
 		startUp();
-	}
-	
-	if(paddleCenter.x < paddleWidth){
-		paddleCenter.x = paddleWidth;
-	} else if (paddleCenter.x > wid - paddleWidth) {
-		paddleCenter.x = wid - paddleWidth;
 	}
 }
 
@@ -87,15 +111,14 @@ void PongGame::setup()
 	hei = getWindowHeight();
 	rad = 25.0f;
 	touchArea = Vec2f(getWindowWidth(), 100);
-	paddleHeight = 10.0f;
-	paddleCenter = Vec2f(getWindowCenter().x, getWindowHeight() - paddleHeight * 2 - touchArea.y);
-	paddleWidth = 80.0f;
+	paddleCenter = Vec2f(getWindowCenter().x, hei + 50);
 }
 
 void PongGame::resize( ResizeEvent event )
 {
 	//mCam.lookAt( Vec3f( 0, 0, -hei * 2.2f ), Vec3f::zero(), Vec3f(0,-1,0) );
 	//mCam.setPerspective( 60, event.getAspectRatio(), 1, 2000 );
+	setWindowSize(event.getWidth(), event.getHeight());
 }
 
 void PongGame::mouseDown( MouseEvent event )
@@ -151,7 +174,7 @@ void PongGame::draw()
 		
 		//draw paddle
 		color(Colorf(1,1,1));
-		drawSolidRect( Rectf(paddleCenter.x - paddleWidth, paddleCenter.y - paddleHeight, paddleCenter.x + paddleWidth, paddleCenter.y + paddleHeight ) );
+		drawSolidCircle( paddleCenter, 200, 64);
 		
 		//draw touch area
 		color( Colorf(0.2f, 0.2f, 0.5f) );
