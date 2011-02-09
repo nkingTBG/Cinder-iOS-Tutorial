@@ -1,0 +1,183 @@
+// !$*UTF8*$!
+{
+	00CFDFDF11384CC60091E310 /* PongGameApp.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {920, 1079}}";
+			sepNavSelRange = "{1409, 0}";
+			sepNavVisRange = "{936, 761}";
+		};
+	};
+	1D6058900D05DD3D006BFB54 /* PongGame */ = {
+		activeExec = 0;
+		executables = (
+			4F99D3931302F084000E5BF9 /* PongGame */,
+		);
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 4F99D3931302F084000E5BF9 /* PongGame */;
+		activeSDKPreference = iphoneos4.2;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* PongGame */;
+		codeSenseManager = 4F99D3C31302F0D7000E5BF9 /* Code sense */;
+		executables = (
+			4F99D3931302F084000E5BF9 /* PongGame */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					357,
+					20,
+					48.16259765625,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					702,
+					60,
+					20,
+					48.16259765625,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 318959749;
+			PBXWorkspaceStateSaveDate = 318959749;
+		};
+		perUserProjectItems = {
+			4F99D3C81302F1EB000E5BF9 /* PBXBookmark */ = 4F99D3C81302F1EB000E5BF9 /* PBXBookmark */;
+			4F99D3C91302F1EB000E5BF9 /* PBXTextBookmark */ = 4F99D3C91302F1EB000E5BF9 /* PBXTextBookmark */;
+			4F99D3D81302F26F000E5BF9 /* PBXTextBookmark */ = 4F99D3D81302F26F000E5BF9 /* PBXTextBookmark */;
+			4F99D3DB1302F493000E5BF9 /* PBXTextBookmark */ = 4F99D3DB1302F493000E5BF9 /* PBXTextBookmark */;
+			4F99D3E71302F7F0000E5BF9 /* PBXTextBookmark */ = 4F99D3E71302F7F0000E5BF9 /* PBXTextBookmark */;
+			4F99D3F21302F8D8000E5BF9 /* PBXTextBookmark */ = 4F99D3F21302F8D8000E5BF9 /* PBXTextBookmark */;
+		};
+		sourceControlManager = 4F99D3C21302F0D7000E5BF9 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	4F99D3931302F084000E5BF9 /* PongGame */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = PongGame;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	4F99D3C21302F0D7000E5BF9 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	4F99D3C31302F0D7000E5BF9 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	4F99D3C81302F1EB000E5BF9 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
+	};
+	4F99D3C91302F1EB000E5BF9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
+		name = "PongGameApp.cpp: 55";
+		rLen = 0;
+		rLoc = 1127;
+		rType = 0;
+		vrLen = 788;
+		vrLoc = 960;
+	};
+	4F99D3D81302F26F000E5BF9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
+		name = "PongGameApp.cpp: 55";
+		rLen = 0;
+		rLoc = 1127;
+		rType = 0;
+		vrLen = 788;
+		vrLoc = 960;
+	};
+	4F99D3DB1302F493000E5BF9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
+		name = "PongGameApp.cpp: 55";
+		rLen = 0;
+		rLoc = 1127;
+		rType = 0;
+		vrLen = 788;
+		vrLoc = 960;
+	};
+	4F99D3E71302F7F0000E5BF9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
+		name = "PongGameApp.cpp: 55";
+		rLen = 0;
+		rLoc = 1127;
+		rType = 0;
+		vrLen = 788;
+		vrLoc = 960;
+	};
+	4F99D3F21302F8D8000E5BF9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
+		name = "PongGameApp.cpp: 70";
+		rLen = 0;
+		rLoc = 1409;
+		rType = 0;
+		vrLen = 761;
+		vrLoc = 936;
+	};
+}
