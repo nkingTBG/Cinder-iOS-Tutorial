@@ -23,26 +23,42 @@ public:
 	virtual void	startUp();
 	
 	virtual void	boundaries();
-	virtual void	collisions();
+	virtual void	collisions(Vec2f, float, bool);
+	virtual void	aiPaddle();
 	
 	Vec2f pos, vel, acc;
 	float wid, hei, rad;
-	Vec2f paddleCenter;
+	Vec2f paddleCenter, aiPaddleCenter;
 	
 	Vec2f touchArea;
 	bool start, colliding;
-	float paddleLast;
+	float paddleLast, aiPaddleLast;
+	float easingFactor;
 };
 
-void PongGame::collisions(){
+void PongGame::aiPaddle()
+{	
+	aiPaddleLast = aiPaddleCenter.x;
+	aiPaddleCenter.x -= (aiPaddleCenter.x - pos.x) * easingFactor;
+}
+
+void PongGame::collisions(Vec2f paddle, float paddleLast_, bool is_ai)
+{
+	int mult;
+	if(is_ai){
+		mult = 1;	
+	} else {
+		mult = -1;
+	}
+
 	
 	float minDistanceSQ	= 200*200 + rad * rad;
-	float distanceSQ		= (paddleCenter.x - pos.x)*(paddleCenter.x - pos.x) + (paddleCenter.y - pos.y)*(paddleCenter.y - pos.y);
+	float distanceSQ	= (paddle.x - pos.x)*(paddle.x - pos.x) + (paddle.y - pos.y)*(paddle.y - pos.y);
 	
 	
 	if( distanceSQ <= minDistanceSQ && colliding == false ){
 		colliding = true;
-		Vec2f collisionDir = Vec2f(paddleCenter - vel);
+		Vec2f collisionDir = Vec2f(paddle - vel);
 		
 		if(abs(collisionDir.x / collisionDir.y) > 4){
 			collisionDir.y = abs(collisionDir.x) / -4;
@@ -50,7 +66,7 @@ void PongGame::collisions(){
 		
 		collisionDir.normalize();
 		
-		float paddleSpeed = paddleCenter.x - paddleLast;
+		float paddleSpeed = paddle.x - paddleLast_;
 		if(paddleSpeed > 14){
 			paddleSpeed = 14;
 		}
@@ -58,14 +74,10 @@ void PongGame::collisions(){
 		Vec2f paddleVel;
 		
 		if(paddleSpeed < 1){
-			paddleVel = Vec2f( paddleSpeed , vel.y * -0.7f - 3);
+			paddleVel = Vec2f( paddleSpeed , vel.y * 0.7f * mult + 3 * mult);
 		} else {
-			paddleVel = Vec2f( paddleSpeed , -10 );
+			paddleVel = Vec2f( paddleSpeed , 10 * mult );
 		}
-		
-		
-
-		
 		
 		Vec2f collisionVel = Vec2f(paddleVel - vel);
 		float totalForce = collisionDir.x * collisionVel.x + collisionDir.y * collisionVel.y;
@@ -88,16 +100,15 @@ void PongGame::boundaries(){
 		pos.x = wid - rad;
 	}
 	
-	if(pos.y < 0 + rad){
-		vel.y *= -1.0f;
-		pos.y = 0 + rad;
+	if(pos.y < 0 - rad){
+		startUp();
 	} else if (pos.y > hei -touchArea.y + rad){
 		startUp();
 	}
 }
 
 void PongGame::startUp(){
-	pos = Vec2f(0,0);
+	pos = getWindowCenter();
 	vel = Vec2f( Rand::randFloat(10), 10 );
 	start = true;
 	colliding = false;
@@ -112,6 +123,8 @@ void PongGame::setup()
 	rad = 25.0f;
 	touchArea = Vec2f(getWindowWidth(), 100);
 	paddleCenter = Vec2f(getWindowCenter().x, hei + 50);
+	aiPaddleCenter = Vec2f(getWindowCenter().x, -150);
+	easingFactor = 0.25f;
 }
 
 void PongGame::resize( ResizeEvent event )
@@ -147,8 +160,14 @@ void PongGame::update()
 	} else{
 		vel += acc;
 		pos += vel;
+		aiPaddle();
 		boundaries();
-		collisions();
+		
+		collisions(aiPaddleCenter, aiPaddleLast, true);
+		collisions(paddleCenter, paddleLast, false);
+		
+		
+		
 	}
 }
 
@@ -175,6 +194,9 @@ void PongGame::draw()
 		//draw paddle
 		color(Colorf(1,1,1));
 		drawSolidCircle( paddleCenter, 200, 64);
+		
+		//draw opponent paddle
+		drawSolidCircle( aiPaddleCenter, 200, 64);
 		
 		//draw touch area
 		color( Colorf(0.2f, 0.2f, 0.5f) );
