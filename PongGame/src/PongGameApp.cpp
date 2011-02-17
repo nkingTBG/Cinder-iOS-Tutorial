@@ -35,6 +35,7 @@ public:
 	bool serve, colliding, userServe;
 	float paddleLast, aiPaddleLast;
 	float easingFactor, engageThresh;
+	float maxSpeed, minSpeed;
 };
 
 void PongGame::setup()
@@ -51,6 +52,8 @@ void PongGame::setup()
 	paddleRadius = 200;
 	easingFactor = 0.15f;
 	engageThresh = 0.3f;
+	maxSpeed = 25.0f;
+	minSpeed = 1.0f;
 }
 
 void PongGame::update()
@@ -59,6 +62,14 @@ void PongGame::update()
 		
 	} else{
 		vel += acc;
+		float velSpeed = vel.lengthSquared();
+		if(velSpeed > maxSpeed * maxSpeed){
+			vel.normalize();
+			vel *= maxSpeed;
+		} else if (velSpeed < minSpeed * minSpeed) {
+			vel.normalize();
+			vel *= minSpeed;
+		}
 		pos += vel;
 		aiPaddle();
 		boundaries();
