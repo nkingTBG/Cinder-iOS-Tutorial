@@ -20,7 +20,7 @@ public:
 	virtual void	draw();
 	virtual void	mouseDown( MouseEvent event );
 	virtual void	mouseDrag( MouseEvent event );
-	virtual void	startUp();
+	virtual void	serveBall();
 	
 	virtual void	boundaries();
 	virtual void	collisions(Vec2f, float, bool);
@@ -29,17 +29,50 @@ public:
 	Vec2f pos, vel, acc;
 	float wid, hei, rad;
 	Vec2f paddleCenter, aiPaddleCenter;
+	float paddleRadius;
 	
 	Vec2f touchArea;
-	bool start, colliding;
+	bool serve, colliding, userServe;
 	float paddleLast, aiPaddleLast;
-	float easingFactor;
+	float easingFactor, engageThresh;
 };
+
+void PongGame::setup()
+{
+	userServe = false;
+	serveBall();
+	acc = Vec2f(0,0);
+	wid = getWindowWidth();
+	hei = getWindowHeight();
+	rad = 25.0f;
+	touchArea = Vec2f(getWindowWidth(), 100);
+	paddleCenter = Vec2f(getWindowCenter().x, hei + 50);
+	aiPaddleCenter = Vec2f(0, -150);
+	paddleRadius = 200;
+	easingFactor = 0.15f;
+	engageThresh = 0.3f;
+}
+
+void PongGame::update()
+{	
+	if (serve) {
+		
+	} else{
+		vel += acc;
+		pos += vel;
+		aiPaddle();
+		boundaries();
+		
+		collisions(aiPaddleCenter, aiPaddleLast, true);
+		collisions(paddleCenter, paddleLast, false);
+	}
+}
 
 void PongGame::aiPaddle()
 {	
+	engageThresh = 1 - ( pos.y / (hei - 100) );
 	aiPaddleLast = aiPaddleCenter.x;
-	aiPaddleCenter.x -= (aiPaddleCenter.x - pos.x) * easingFactor;
+	aiPaddleCenter.x -= (aiPaddleCenter.x - pos.x) * easingFactor * engageThresh;
 }
 
 void PongGame::collisions(Vec2f paddle, float paddleLast_, bool is_ai)
@@ -101,30 +134,24 @@ void PongGame::boundaries(){
 	}
 	
 	if(pos.y < 0 - rad){
-		startUp();
+		userServe = true;
+		serveBall();
 	} else if (pos.y > hei -touchArea.y + rad){
-		startUp();
+		userServe = false;
+		serveBall();
 	}
 }
 
-void PongGame::startUp(){
-	pos = getWindowCenter();
-	vel = Vec2f( Rand::randFloat(10), 10 );
-	start = true;
+void PongGame::serveBall(){
+	if(userServe){
+		pos = Vec2f(paddleCenter.x, paddleCenter.y - paddleRadius);
+		vel = Vec2f( Rand::randFloat(-10, 10), -10 );
+	} else {
+		pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius);
+		vel = Vec2f( Rand::randFloat(-10, 10), 10 );
+	}
+	serve = true;
 	colliding = false;
-}
-
-void PongGame::setup()
-{
-	startUp();
-	acc = Vec2f(0,0);
-	wid = getWindowWidth();
-	hei = getWindowHeight();
-	rad = 25.0f;
-	touchArea = Vec2f(getWindowWidth(), 100);
-	paddleCenter = Vec2f(getWindowCenter().x, hei + 50);
-	aiPaddleCenter = Vec2f(getWindowCenter().x, -150);
-	easingFactor = 0.25f;
 }
 
 void PongGame::resize( ResizeEvent event )
@@ -139,9 +166,11 @@ void PongGame::mouseDown( MouseEvent event )
 	if(event.getY() > hei - touchArea.y){
 		paddleLast = paddleCenter.x;
 		paddleCenter.x = event.getPos().x;
-	}
-	if(start){
-		start = false;
+		if(serve && userServe){
+			pos.x = paddleCenter.x;
+		}
+	} else if(serve){
+		serve = false;
 	}
 }
 
@@ -150,24 +179,9 @@ void PongGame::mouseDrag( MouseEvent event )
 	if(event.getY() > hei - touchArea.y){
 		paddleLast = paddleCenter.x;
 		paddleCenter.x = event.getPos().x;
-	}
-}
-
-void PongGame::update()
-{	
-	if (start) {
-			
-	} else{
-		vel += acc;
-		pos += vel;
-		aiPaddle();
-		boundaries();
-		
-		collisions(aiPaddleCenter, aiPaddleLast, true);
-		collisions(paddleCenter, paddleLast, false);
-		
-		
-		
+		if(serve && userServe){
+			pos.x = paddleCenter.x;
+		}
 	}
 }
 
@@ -181,28 +195,29 @@ void PongGame::draw()
 	color( ColorAf(0,0,0,0.85f) );
 	drawSolidRect( Rectf( 0, 0, wid, hei) );
 	
-	if(start){
-		
-		drawString( "Touch to Start", Vec2f(wid * 0.25f, hei * 0.35f), Colorf(1, 1, 1), Font( "Gill Sans", 60 ) );
-		
-	} else {
 	
-		//draw ball
-		color(Colorf(1,0,0));
-		drawSolidCircle(pos, rad ,32);
+	//draw ball
+	color(Colorf(1,0,0));
+	drawSolidCircle(pos, rad ,32);
+	
+	//draw paddle
+	color(Colorf(1,1,1));
+	drawSolidCircle( paddleCenter, paddleRadius, 64);
+	
+	//draw opponent paddle
+	drawSolidCircle( aiPaddleCenter, paddleRadius, 64);
+	
+	//draw touch area
+	color( Colorf(0.2f, 0.2f, 0.5f) );
+	drawSolidRect( Rectf(wid, hei, 0, hei - touchArea.y  ) );
+	drawString( "Touch Area", Vec2f(50, hei - touchArea.y), Colorf(0.3f, 0.3f, 0.65f), Font( "Gill Sans", 40 ) );
+	
+	if(serve){
 		
-		//draw paddle
-		color(Colorf(1,1,1));
-		drawSolidCircle( paddleCenter, 200, 64);
+		drawString( "Touch to Serve", Vec2f(wid * 0.25f, hei * 0.35f), Colorf(1, 1, 1), Font( "Gill Sans", 60 ) );
 		
-		//draw opponent paddle
-		drawSolidCircle( aiPaddleCenter, 200, 64);
-		
-		//draw touch area
-		color( Colorf(0.2f, 0.2f, 0.5f) );
-		drawSolidRect( Rectf(wid, hei, 0, hei - touchArea.y  ) );
-		drawString( "Touch Area", Vec2f(50, hei - touchArea.y), Colorf(0.3f, 0.3f, 0.65f), Font( "Gill Sans", 40 ) );
 	}
+	
 }
 
 CINDER_APP_COCOA_TOUCH( PongGame, RendererGl )
