@@ -210,16 +210,25 @@ void PongGame::draw()
 	clear();
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	setMatricesWindow( getWindowSize() );
+	enable( GL_TEXTURE_2D );
+	//enableDepthRead();
 	
-	color( ColorAf(0,0,0,0.85f) );
-	drawSolidRect( Rectf( 0, 0, wid, hei) );
+	setMatricesWindowPersp(wid, hei);
+	//setMatricesWindow(wid, hei);
+	glEnable( GL_LIGHTING );
+	glEnable( GL_LIGHT0 );
+	glEnable( GL_LIGHT1 );
+	GLfloat light_position[] = { 1, 1, 1, 0 };
+	glLightfv( GL_LIGHT0, GL_POSITION, light_position );
+	GLfloat light_RGB[] = { 0.2f, 0.2f, 0.2f };
+	glLightfv(GL_LIGHT1, GL_AMBIENT, light_RGB);
 	
 	
 	//draw ball
 	color(Colorf(1,0,0));
-	drawSolidCircle(pos, rad , 32);
-	
+	drawSphere( Vec3f(pos.x, pos.y, 0), rad , 32);
+	//drawSphere( Vec3f(300,300, 0), 300 , 32);
+	disable( GL_TEXTURE_2D );
 	//draw paddle
 	color(Colorf(1,1,1));
 	drawSolidCircle( paddleCenter, paddleRadius, 64);
