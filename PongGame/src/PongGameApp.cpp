@@ -6,6 +6,8 @@
 #include "cinder/Camera.h"
 #include "cinder/Rand.h"
 #include "cinder/gl/Fbo.h"
+#include <iostream>
+#include <sstream>
 
 using namespace ci;
 using namespace ci::app;
@@ -36,6 +38,8 @@ public:
 	float paddleLast, aiPaddleLast;
 	float easingFactor, engageThresh;
 	float maxSpeed, minSpeed;
+	
+	int userScore, aiScore;
 };
 
 void PongGame::setup()
@@ -52,8 +56,11 @@ void PongGame::setup()
 	paddleRadius = 200;
 	easingFactor = 0.15f;
 	engageThresh = 0.3f;
-	maxSpeed = 25.0f;
-	minSpeed = 1.0f;
+	maxSpeed = 40.0f;
+	minSpeed = 3.0f;
+	
+	userScore = 0;
+	aiScore = 0;
 }
 
 void PongGame::update()
@@ -146,9 +153,11 @@ void PongGame::boundaries(){
 	
 	if(pos.y < 0 - rad){
 		userServe = true;
+		userScore++;
 		serveBall();
 	} else if (pos.y > hei -touchArea.y + rad){
 		userServe = false;
+		aiScore++;
 		serveBall();
 	}
 }
@@ -225,7 +234,10 @@ void PongGame::draw()
 	
 	if(serve){
 		
-		drawString( "Touch to Serve", Vec2f(wid * 0.25f, hei * 0.35f), Colorf(1, 1, 1), Font( "Gill Sans", 60 ) );
+		drawString( "Touch to Serve", Vec2f(wid * 0.25f, hei * 0.4f), Colorf(1, 1, 1), Font( "Gill Sans", 60 ) );
+		ostringstream score;
+		score << "Score is " << userScore << " - " << aiScore;
+		drawString( score.str(), Vec2f(wid * 0.25f, hei * 0.3f), Colorf(1, 1, 1), Font( "Gill Sans", 60 ) );
 		
 	}
 	
