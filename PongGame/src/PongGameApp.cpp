@@ -218,7 +218,7 @@ void PongGame::draw()
 	
 	//draw ball
 	color(Colorf(1,0,0));
-	drawSolidCircle(pos, rad ,32);
+	drawSolidCircle(pos, rad , 32);
 	
 	//draw paddle
 	color(Colorf(1,1,1));
