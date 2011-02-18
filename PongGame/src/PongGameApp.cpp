@@ -223,7 +223,6 @@ void PongGame::draw()
 	GLfloat light_RGB[] = { 0.2f, 0.2f, 0.2f };
 	glLightfv(GL_LIGHT1, GL_AMBIENT, light_RGB);
 	
-	
 	//draw ball
 	color(Colorf(1,0,0));
 	drawSphere( Vec3f(pos.x, pos.y, 0), rad , 32);
