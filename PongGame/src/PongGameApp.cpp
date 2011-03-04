@@ -57,6 +57,7 @@ void PongGame::setup()
 	paddleCenter = Vec2f(getWindowCenter().x, hei + 50);
 	aiPaddleCenter = Vec2f(0, -150);
 	paddleRadius = 200;
+	pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius + rad * 0.8f);
 	easingFactor = 0.15f;
 	engageThresh = 0.3f;
 	maxSpeed = 40.0f;
@@ -171,10 +172,10 @@ void PongGame::boundaries(){
 
 void PongGame::serveBall(){
 	if(userServe){
-		pos = Vec2f(paddleCenter.x, paddleCenter.y - paddleRadius);
+		pos = Vec2f(paddleCenter.x, paddleCenter.y - paddleRadius - rad * 0.8f);
 		vel = Vec2f( Rand::randFloat(-10, 10), -10 );
 	} else {
-		pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius);
+		pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius + rad * 0.8f);
 		vel = Vec2f( Rand::randFloat(-10, 10), 10 );
 	}
 	serve = true;
