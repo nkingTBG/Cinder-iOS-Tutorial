@@ -208,17 +208,19 @@ void PongGame::mouseDrag( MouseEvent event )
 void PongGame::draw()
 {
 	clear();
+	glEnable( GL_LIGHTING );
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	enable( GL_TEXTURE_2D );
-	//enableDepthRead();
+	//glDisable( GL_TEXTURE_2D );
+	glEnable( GL_DEPTH_TEST );
+
 	
 	setMatricesWindowPersp(wid, hei);
 	//setMatricesWindow(wid, hei);
-	glEnable( GL_LIGHTING );
+	
 	glEnable( GL_LIGHT0 );
 	glEnable( GL_LIGHT1 );
-	GLfloat light_position[] = { 1, 1, 1, 0 };
+	GLfloat light_position[] = { 0, 0, 200.0f, 0.000001f };
 	glLightfv( GL_LIGHT0, GL_POSITION, light_position );
 	GLfloat light_RGB[] = { 0.2f, 0.2f, 0.2f };
 	glLightfv(GL_LIGHT1, GL_AMBIENT, light_RGB);
@@ -227,7 +229,9 @@ void PongGame::draw()
 	color(Colorf(1,0,0));
 	drawSphere( Vec3f(pos.x, pos.y, 0), rad , 32);
 	//drawSphere( Vec3f(300,300, 0), 300 , 32);
-	disable( GL_TEXTURE_2D );
+	//glEnable( GL_TEXTURE_2D );
+	glDisable( GL_LIGHTING );
+	glDisable(GL_DEPTH_TEST);
 	//draw paddle
 	color(Colorf(1,1,1));
 	drawSolidCircle( paddleCenter, paddleRadius, 64);
