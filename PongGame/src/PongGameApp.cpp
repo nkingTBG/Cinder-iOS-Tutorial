@@ -42,7 +42,7 @@ public:
 	
 	int userScore, aiScore;
 	
-	Texture texture1, texture2;
+	Texture texture1, texture2, texture3;
 };
 
 void PongGame::setup()
@@ -65,8 +65,9 @@ void PongGame::setup()
 	userScore = 0;
 	aiScore = 0;
 	
-	texture1 = Texture( loadImage( loadResource( "leopard.jpg" ) ) );
+	texture1 = Texture( loadImage( loadResource( "brushed2.jpg" ) ) );
 	texture2 = Texture( loadImage( loadResource( "brushed.jpg" ) ) );
+	texture3 = Texture( loadImage( loadResource( "wood.jpg" ) ) );
 }
 
 void PongGame::update()
@@ -214,14 +215,19 @@ void PongGame::mouseDrag( MouseEvent event )
 void PongGame::draw()
 {
 	clear();
-	glEnable( GL_LIGHTING );
+	
+	
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable( GL_DEPTH_TEST );
 	
 	setMatricesWindowPersp(wid, hei);
 	//setMatricesWindow(wid, hei);
+	glEnable(GL_TEXTURE_2D);
 	
+	
+	
+	glEnable( GL_LIGHTING );
 	glEnable( GL_LIGHT0 );
 	glEnable( GL_LIGHT1 );
 	GLfloat light_position[] = { 0, 0, 200.0f, 0.000001f };
@@ -229,33 +235,28 @@ void PongGame::draw()
 	GLfloat light_RGB[] = { 0.2f, 0.2f, 0.2f };
 	glLightfv(GL_LIGHT1, GL_AMBIENT, light_RGB);
 	
-	//draw ball
-	if(sin(getElapsedSeconds()) < 0){
-		texture2.unbind();
-		texture1.bind();
-	} else {
-		texture1.unbind();
-		texture2.bind();
-	}
-
+	gl::draw( texture3, getWindowBounds() );
 	
-	
-	glEnable(GL_TEXTURE_2D);
-	color(Colorf(1,0,0));
+	texture1.bind();
 	drawSphere( Vec3f(pos.x, pos.y, 0), rad , 32);
 
-	glDisable( GL_LIGHTING );
-	glDisable(GL_DEPTH_TEST);
+	glEnable( GL_LIGHT2 );
+	GLfloat light_RGB2[] = { 0.6f, 0.6f, 0.6f };
+	glLightfv(GL_LIGHT2, GL_AMBIENT, light_RGB2);
 	
-
-	//draw paddle
+	texture2.bind();
+	//draw paddles
 	
-	color(Colorf(1,1,1));
-	drawSolidCircle( paddleCenter, paddleRadius, 64);
+	//drawSolidCircle( paddleCenter, paddleRadius, 64);
+	drawSphere( Vec3f(paddleCenter.x, paddleCenter.y, 0), paddleRadius , 48);
 	
 	//draw opponent paddle
-	drawSolidCircle( aiPaddleCenter, paddleRadius, 64);
+	//drawSolidCircle( aiPaddleCenter, paddleRadius, 64);
+	drawSphere( Vec3f(aiPaddleCenter.x, aiPaddleCenter.y, 0), paddleRadius , 48);
 	
+	glDisable(GL_LIGHT2);
+	glDisable( GL_LIGHTING );
+	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_TEXTURE_2D);
 	//draw touch area
 	color( Colorf(0.2f, 0.2f, 0.5f) );
