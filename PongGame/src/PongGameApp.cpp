@@ -259,9 +259,9 @@ void PongGame::draw()
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_TEXTURE_2D);
 	//draw touch area
-	color( Colorf(0.2f, 0.2f, 0.5f) );
+	color( Colorf(0.0f, 0.0f, 0.0f) );
 	drawSolidRect( Rectf(wid, hei, 0, hei - touchArea.y  ) );
-	drawString( "Touch Area", Vec2f(50, hei - touchArea.y), Colorf(0.3f, 0.3f, 0.65f), Font( "Gill Sans", 40 ) );
+	drawString( "Touch Area", Vec2f(50, hei - touchArea.y), Colorf(0.3f, 0.3f, 0.3f), Font( "Gill Sans", 40 ) );
 	
 	if(serve){
 		

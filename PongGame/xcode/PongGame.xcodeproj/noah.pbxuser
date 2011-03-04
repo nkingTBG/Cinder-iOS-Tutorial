@@ -2,9 +2,9 @@
 {
 	00CFDFDF11384CC60091E310 /* PongGameApp.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {920, 3679}}";
-			sepNavSelRange = "{5394, 0}";
-			sepNavVisRange = "{4832, 915}";
+			sepNavIntBoundsRect = "{{0, 0}, {920, 3497}}";
+			sepNavSelRange = "{6206, 0}";
+			sepNavVisRange = "{5463, 1140}";
 		};
 	};
 	1D6058900D05DD3D006BFB54 /* PongGame */ = {
@@ -96,6 +96,7 @@
 			4F8AB9BE13215EB90050A4F9 /* PBXTextBookmark */ = 4F8AB9BE13215EB90050A4F9 /* PBXTextBookmark */;
 			4F8AB9C013215EB90050A4F9 /* PBXTextBookmark */ = 4F8AB9C013215EB90050A4F9 /* PBXTextBookmark */;
 			4F8AB9C113215EB90050A4F9 /* PBXTextBookmark */ = 4F8AB9C113215EB90050A4F9 /* PBXTextBookmark */;
+			4F8AB9C6132161020050A4F9 /* PBXTextBookmark */ = 4F8AB9C6132161020050A4F9 /* PBXTextBookmark */;
 			4F9101D21303581C00114D0E = 4F9101D21303581C00114D0E /* PBXTextBookmark */;
 			4F99D4201302FB40000E5BF9 = 4F99D4201302FB40000E5BF9 /* PBXTextBookmark */;
 			4F99D4331302FDED000E5BF9 = 4F99D4331302FDED000E5BF9 /* PBXTextBookmark */;
@@ -342,6 +343,16 @@
 		rType = 0;
 		vrLen = 915;
 		vrLoc = 4832;
+	};
+	4F8AB9C6132161020050A4F9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
+		name = "PongGameApp.cpp: 264";
+		rLen = 0;
+		rLoc = 6206;
+		rType = 0;
+		vrLen = 1140;
+		vrLoc = 5463;
 	};
 	4F9101D21303581C00114D0E /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
