@@ -42,7 +42,7 @@ public:
 	
 	int userScore, aiScore;
 	
-	Texture texture1, texture2, texture3;
+	Texture texture1, texture2, texture3, paddleTexture;
 };
 
 void PongGame::setup()
@@ -54,10 +54,10 @@ void PongGame::setup()
 	hei = getWindowHeight();
 	rad = 25.0f;
 	touchArea = Vec2f(getWindowWidth(), 100);
-	paddleCenter = Vec2f(getWindowCenter().x, hei + 50);
-	aiPaddleCenter = Vec2f(0, -150);
-	paddleRadius = 200;
-	pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius + rad * 0.8f);
+	paddleCenter = Vec2f(getWindowCenter().x, hei - touchArea.y - 70);
+	aiPaddleCenter = Vec2f(wid/2, 70);
+	paddleRadius = 70;
+	pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius + rad);
 	easingFactor = 0.15f;
 	engageThresh = 0.3f;
 	maxSpeed = 40.0f;
@@ -68,7 +68,8 @@ void PongGame::setup()
 	
 	texture1 = Texture( loadImage( loadResource( "brushed2.jpg" ) ) );
 	texture2 = Texture( loadImage( loadResource( "brushed.jpg" ) ) );
-	texture3 = Texture( loadImage( loadResource( "wood.jpg" ) ) );
+	texture3 = Texture( loadImage( loadResource( "table_surface.jpg" ) ) );
+	paddleTexture = Texture( loadImage(loadResource( "paddle_140.png" ) ) );
 }
 
 void PongGame::update()
@@ -111,7 +112,7 @@ void PongGame::collisions(Vec2f paddle, float paddleLast_, bool is_ai)
 	}
 
 	
-	float minDistanceSQ	= 200*200 + rad * rad;
+	float minDistanceSQ	= (paddleRadius + rad) * (paddleRadius + rad);
 	float distanceSQ	= (paddle.x - pos.x)*(paddle.x - pos.x) + (paddle.y - pos.y)*(paddle.y - pos.y);
 	
 	
@@ -172,10 +173,10 @@ void PongGame::boundaries(){
 
 void PongGame::serveBall(){
 	if(userServe){
-		pos = Vec2f(paddleCenter.x, paddleCenter.y - paddleRadius - rad * 0.8f);
+		pos = Vec2f(paddleCenter.x, paddleCenter.y - paddleRadius - rad);
 		vel = Vec2f( Rand::randFloat(-10, 10), -10 );
 	} else {
-		pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius + rad * 0.8f);
+		pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius + rad);
 		vel = Vec2f( Rand::randFloat(-10, 10), 10 );
 	}
 	serve = true;
@@ -237,7 +238,6 @@ void PongGame::draw()
 	glLightfv(GL_LIGHT1, GL_AMBIENT, light_RGB);
 	
 	gl::draw( texture3, getWindowBounds() );
-	
 	texture1.bind();
 	drawSphere( Vec3f(pos.x, pos.y, 0), rad , 32);
 
@@ -245,15 +245,19 @@ void PongGame::draw()
 	GLfloat light_RGB2[] = { 0.6f, 0.6f, 0.6f };
 	glLightfv(GL_LIGHT2, GL_AMBIENT, light_RGB2);
 	
-	texture2.bind();
+	paddleTexture.bind();
+	drawCube(Vec3f(paddleCenter.x, paddleCenter.y, 0), Vec3f(140, 140, 0.1f) );
+	drawCube(Vec3f(aiPaddleCenter.x, aiPaddleCenter.y, 0), Vec3f(140, 140, 0.1f) );
+	//gl::drawSolidRect( Rectf(paddleCenter.x - rad, hei - touchArea.y - rad * 2, paddleCenter.x + rad, hei - touchArea.y) );
+	
+	//texture2.bind();
 	//draw paddles
 	
-	//drawSolidCircle( paddleCenter, paddleRadius, 64);
-	drawSphere( Vec3f(paddleCenter.x, paddleCenter.y, 0), paddleRadius , 48);
+	//drawSphere( Vec3f(paddleCenter.x, paddleCenter.y, 0), paddleRadius , 48);
 	
 	//draw opponent paddle
 	//drawSolidCircle( aiPaddleCenter, paddleRadius, 64);
-	drawSphere( Vec3f(aiPaddleCenter.x, aiPaddleCenter.y, 0), paddleRadius , 48);
+	//drawSphere( Vec3f(aiPaddleCenter.x, aiPaddleCenter.y, 0), paddleRadius , 48);
 	
 	glDisable(GL_LIGHT2);
 	glDisable( GL_LIGHTING );
@@ -265,11 +269,10 @@ void PongGame::draw()
 	drawString( "Touch Area", Vec2f(50, hei - touchArea.y), Colorf(0.3f, 0.3f, 0.3f), Font( "Gill Sans", 40 ) );
 	
 	if(serve){
-		
-		drawString( "Touch to Serve", Vec2f(wid * 0.25f, hei * 0.4f), Colorf(1, 1, 1), Font( "Gill Sans", 60 ) );
+		drawString( "Touch to Serve", Vec2f(wid * 0.25f, hei * 0.4f), Colorf(0, 0, 0), Font( "Gill Sans", 60 ) );
 		ostringstream score;
 		score << "Score is " << userScore << " - " << aiScore;
-		drawString( score.str(), Vec2f(wid * 0.25f, hei * 0.3f), Colorf(1, 1, 1), Font( "Gill Sans", 60 ) );
+		drawString( score.str(), Vec2f(wid * 0.25f, hei * 0.3f), Colorf(0, 0, 0), Font( "Gill Sans", 60 ) );
 		
 	}
 	
