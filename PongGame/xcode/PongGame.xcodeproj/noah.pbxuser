@@ -2,9 +2,10 @@
 {
 	00CFDFDF11384CC60091E310 /* PongGameApp.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {920, 3380}}";
-			sepNavSelRange = "{4678, 0}";
-			sepNavVisRange = "{4465, 1003}";
+			sepNavFolds = "{\n    c =     (\n                {\n            l = \"GLuint textureUnit\";\n            r = \"{5272, 22}\";\n            s = 1;\n        }\n    );\n    r = \"{0, 6260}\";\n    s = 0;\n}";
+			sepNavIntBoundsRect = "{{0, 0}, {920, 3484}}";
+			sepNavSelRange = "{5272, 1}";
+			sepNavVisRange = "{4760, 943}";
 		};
 	};
 	1D6058900D05DD3D006BFB54 /* PongGame */ = {
@@ -18,6 +19,9 @@
 		activeExecutable = 4F99D3931302F084000E5BF9 /* PongGame */;
 		activeSDKPreference = iphoneos4.2;
 		activeTarget = 1D6058900D05DD3D006BFB54 /* PongGame */;
+		addToTargets = (
+			1D6058900D05DD3D006BFB54 /* PongGame */,
+		);
 		codeSenseManager = 4F99D3C31302F0D7000E5BF9 /* Code sense */;
 		executables = (
 			4F99D3931302F084000E5BF9 /* PongGame */,
@@ -77,6 +81,12 @@
 			4F658E63130ED9A200FB5B8C = 4F658E63130ED9A200FB5B8C /* PBXTextBookmark */;
 			4F8AB841132144620050A4F9 /* PBXTextBookmark */ = 4F8AB841132144620050A4F9 /* PBXTextBookmark */;
 			4F8AB842132144620050A4F9 /* PBXTextBookmark */ = 4F8AB842132144620050A4F9 /* PBXTextBookmark */;
+			4F8AB96513214D660050A4F9 /* PBXTextBookmark */ = 4F8AB96513214D660050A4F9 /* PBXTextBookmark */;
+			4F8AB96713214D660050A4F9 /* PBXTextBookmark */ = 4F8AB96713214D660050A4F9 /* PBXTextBookmark */;
+			4F8AB96813214D660050A4F9 /* PBXTextBookmark */ = 4F8AB96813214D660050A4F9 /* PBXTextBookmark */;
+			4F8AB97513214EE60050A4F9 /* PBXBookmark */ = 4F8AB97513214EE60050A4F9 /* PBXBookmark */;
+			4F8AB97613214EE60050A4F9 /* PBXTextBookmark */ = 4F8AB97613214EE60050A4F9 /* PBXTextBookmark */;
+			4F8AB97713214EE60050A4F9 /* PBXTextBookmark */ = 4F8AB97713214EE60050A4F9 /* PBXTextBookmark */;
 			4F9101D21303581C00114D0E = 4F9101D21303581C00114D0E /* PBXTextBookmark */;
 			4F99D4201302FB40000E5BF9 = 4F99D4201302FB40000E5BF9 /* PBXTextBookmark */;
 			4F99D4331302FDED000E5BF9 = 4F99D4331302FDED000E5BF9 /* PBXTextBookmark */;
@@ -90,7 +100,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 106";
 		rLen = 0;
-		rLoc = 2204;
+		rLoc = 2399;
 		rType = 0;
 		vrLen = 1122;
 		vrLoc = 4502;
@@ -100,7 +110,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 106";
 		rLen = 0;
-		rLoc = 2204;
+		rLoc = 2399;
 		rType = 0;
 		vrLen = 1027;
 		vrLoc = 0;
@@ -110,7 +120,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 106";
 		rLen = 0;
-		rLoc = 2204;
+		rLoc = 2399;
 		rType = 0;
 		vrLen = 989;
 		vrLoc = 38;
@@ -120,7 +130,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 225";
 		rLen = 0;
-		rLoc = 5080;
+		rLoc = 5243;
 		rType = 0;
 		vrLen = 853;
 		vrLoc = 1087;
@@ -130,7 +140,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 225";
 		rLen = 0;
-		rLoc = 5080;
+		rLoc = 5243;
 		rType = 0;
 		vrLen = 809;
 		vrLoc = 1131;
@@ -140,10 +150,70 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 213";
 		rLen = 0;
-		rLoc = 4706;
+		rLoc = 4893;
 		rType = 0;
 		vrLen = 1003;
 		vrLoc = 4465;
+	};
+	4F8AB96513214D660050A4F9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 4F8AB96613214D660050A4F9 /* App.h */;
+		name = "App.h: 275";
+		rLen = 106;
+		rLoc = 16169;
+		rType = 0;
+		vrLen = 3091;
+		vrLoc = 14784;
+	};
+	4F8AB96613214D660050A4F9 /* App.h */ = {
+		isa = PBXFileReference;
+		name = App.h;
+		path = /Users/noah/Documents/Cinder/include/cinder/App/App.h;
+		sourceTree = "<absolute>";
+	};
+	4F8AB96713214D660050A4F9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
+		name = "PongGameApp.cpp: 66";
+		rLen = 0;
+		rLoc = 1632;
+		rType = 0;
+		vrLen = 804;
+		vrLoc = 867;
+	};
+	4F8AB96813214D660050A4F9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
+		name = "PongGameApp.cpp: 6";
+		rLen = 0;
+		rLoc = 185;
+		rType = 0;
+		vrLen = 803;
+		vrLoc = 1206;
+	};
+	4F8AB97513214EE60050A4F9 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 4F8AB96B13214DB60050A4F9 /* leopard.jpg */;
+	};
+	4F8AB97613214EE60050A4F9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
+		name = "PongGameApp.cpp: 230";
+		rLen = 0;
+		rLoc = 5389;
+		rType = 0;
+		vrLen = 1220;
+		vrLoc = 4870;
+	};
+	4F8AB97713214EE60050A4F9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
+		name = "PongGameApp.cpp: 69";
+		rLen = 0;
+		rLoc = 1574;
+		rType = 0;
+		vrLen = 769;
+		vrLoc = 1327;
 	};
 	4F9101D21303581C00114D0E /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;

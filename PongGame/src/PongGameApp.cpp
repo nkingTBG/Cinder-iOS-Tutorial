@@ -3,6 +3,7 @@
 #include "cinder/app/Renderer.h"
 #include "cinder/Surface.h"
 #include "cinder/gl/Texture.h"
+#include "cinder/ImageIo.h"
 #include "cinder/Camera.h"
 #include "cinder/Rand.h"
 #include "cinder/gl/Fbo.h"
@@ -40,6 +41,8 @@ public:
 	float maxSpeed, minSpeed;
 	
 	int userScore, aiScore;
+	
+	Texture texture1, texture2;
 };
 
 void PongGame::setup()
@@ -61,6 +64,9 @@ void PongGame::setup()
 	
 	userScore = 0;
 	aiScore = 0;
+	
+	texture1 = Texture( loadImage( loadResource( "leopard.jpg" ) ) );
+	texture2 = Texture( loadImage( loadResource( "brushed.jpg" ) ) );
 }
 
 void PongGame::update()
@@ -211,9 +217,7 @@ void PongGame::draw()
 	glEnable( GL_LIGHTING );
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	//glDisable( GL_TEXTURE_2D );
 	glEnable( GL_DEPTH_TEST );
-
 	
 	setMatricesWindowPersp(wid, hei);
 	//setMatricesWindow(wid, hei);
@@ -226,19 +230,33 @@ void PongGame::draw()
 	glLightfv(GL_LIGHT1, GL_AMBIENT, light_RGB);
 	
 	//draw ball
+	if(sin(getElapsedSeconds()) < 0){
+		texture2.unbind();
+		texture1.bind();
+	} else {
+		texture1.unbind();
+		texture2.bind();
+	}
+
+	
+	
+	glEnable(GL_TEXTURE_2D);
 	color(Colorf(1,0,0));
 	drawSphere( Vec3f(pos.x, pos.y, 0), rad , 32);
-	//drawSphere( Vec3f(300,300, 0), 300 , 32);
-	//glEnable( GL_TEXTURE_2D );
+
 	glDisable( GL_LIGHTING );
 	glDisable(GL_DEPTH_TEST);
+	
+
 	//draw paddle
+	
 	color(Colorf(1,1,1));
 	drawSolidCircle( paddleCenter, paddleRadius, 64);
 	
 	//draw opponent paddle
 	drawSolidCircle( aiPaddleCenter, paddleRadius, 64);
 	
+	glDisable(GL_TEXTURE_2D);
 	//draw touch area
 	color( Colorf(0.2f, 0.2f, 0.5f) );
 	drawSolidRect( Rectf(wid, hei, 0, hei - touchArea.y  ) );
