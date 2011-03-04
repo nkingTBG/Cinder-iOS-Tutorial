@@ -42,7 +42,7 @@ public:
 	
 	int userScore, aiScore;
 	
-	Texture texture1, texture2, texture3, paddleTexture;
+	Texture texture1, texture2, texture3, paddleTexture, puckTexture;
 };
 
 void PongGame::setup()
@@ -52,7 +52,7 @@ void PongGame::setup()
 	acc = Vec2f(0,0);
 	wid = getWindowWidth();
 	hei = getWindowHeight();
-	rad = 25.0f;
+	rad = 50.0f;
 	touchArea = Vec2f(getWindowWidth(), 100);
 	paddleCenter = Vec2f(getWindowCenter().x, hei - touchArea.y - 70);
 	aiPaddleCenter = Vec2f(wid/2, 70);
@@ -70,6 +70,7 @@ void PongGame::setup()
 	texture2 = Texture( loadImage( loadResource( "brushed.jpg" ) ) );
 	texture3 = Texture( loadImage( loadResource( "table_surface.jpg" ) ) );
 	paddleTexture = Texture( loadImage(loadResource( "paddle_140.png" ) ) );
+	puckTexture = Texture( loadImage(loadResource( "puck_122.png" ) ) );
 }
 
 void PongGame::update()
@@ -237,32 +238,28 @@ void PongGame::draw()
 	GLfloat light_RGB[] = { 0.2f, 0.2f, 0.2f };
 	glLightfv(GL_LIGHT1, GL_AMBIENT, light_RGB);
 	
+	//draw background
 	gl::draw( texture3, getWindowBounds() );
-	texture1.bind();
-	drawSphere( Vec3f(pos.x, pos.y, 0), rad , 32);
+	
 
 	glEnable( GL_LIGHT2 );
 	GLfloat light_RGB2[] = { 0.6f, 0.6f, 0.6f };
 	glLightfv(GL_LIGHT2, GL_AMBIENT, light_RGB2);
 	
+	//draw paddles
 	paddleTexture.bind();
 	drawCube(Vec3f(paddleCenter.x, paddleCenter.y, 0), Vec3f(140, 140, 0.1f) );
 	drawCube(Vec3f(aiPaddleCenter.x, aiPaddleCenter.y, 0), Vec3f(140, 140, 0.1f) );
-	//gl::drawSolidRect( Rectf(paddleCenter.x - rad, hei - touchArea.y - rad * 2, paddleCenter.x + rad, hei - touchArea.y) );
 	
-	//texture2.bind();
-	//draw paddles
-	
-	//drawSphere( Vec3f(paddleCenter.x, paddleCenter.y, 0), paddleRadius , 48);
-	
-	//draw opponent paddle
-	//drawSolidCircle( aiPaddleCenter, paddleRadius, 64);
-	//drawSphere( Vec3f(aiPaddleCenter.x, aiPaddleCenter.y, 0), paddleRadius , 48);
+	//draw puck
+	puckTexture.bind();
+	drawCube( Vec3f(pos.x, pos.y, 0), Vec3f(rad * 2,rad * 2, 0.1f) );
 	
 	glDisable(GL_LIGHT2);
 	glDisable( GL_LIGHTING );
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_TEXTURE_2D);
+	
 	//draw touch area
 	color( Colorf(0.0f, 0.0f, 0.0f) );
 	drawSolidRect( Rectf(wid, hei, 0, hei - touchArea.y  ) );

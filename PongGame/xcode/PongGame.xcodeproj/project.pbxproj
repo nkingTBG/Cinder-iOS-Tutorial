@@ -19,6 +19,7 @@
 		4F8AB9B213215D1E0050A4F9 /* wood.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4F8AB9B113215D1E0050A4F9 /* wood.jpg */; };
 		4FB3BA3213218EB9001ED0C2 /* table_surface.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4FB3BA3113218EB9001ED0C2 /* table_surface.jpg */; };
 		4FB3BA48132197A9001ED0C2 /* paddle_140.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FB3BA47132197A9001ED0C2 /* paddle_140.png */; };
+		4FB3BA7C1321A8CA001ED0C2 /* puck_122.png in Resources */ = {isa = PBXBuildFile; fileRef = 4FB3BA7B1321A8CA001ED0C2 /* puck_122.png */; };
 		C725DFFE121DAC7F00FA186B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C727C02B121B400300192073 /* CoreMedia.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C725E001121DAC8F00FA186B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C725E000121DAC8F00FA186B /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C727C02E121B400300192073 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C727C02D121B400300192073 /* CoreVideo.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -40,6 +41,7 @@
 		4F8AB9B113215D1E0050A4F9 /* wood.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = wood.jpg; path = ../resources/wood.jpg; sourceTree = SOURCE_ROOT; };
 		4FB3BA3113218EB9001ED0C2 /* table_surface.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = table_surface.jpg; path = ../resources/table_surface.jpg; sourceTree = SOURCE_ROOT; };
 		4FB3BA47132197A9001ED0C2 /* paddle_140.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = paddle_140.png; path = ../resources/paddle_140.png; sourceTree = SOURCE_ROOT; };
+		4FB3BA7B1321A8CA001ED0C2 /* puck_122.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = puck_122.png; path = ../resources/puck_122.png; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* PongGame-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PongGame-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		C725E000121DAC8F00FA186B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C727C02B121B400300192073 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -114,6 +116,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FB3BA7B1321A8CA001ED0C2 /* puck_122.png */,
 				4FB3BA47132197A9001ED0C2 /* paddle_140.png */,
 				4FB3BA3113218EB9001ED0C2 /* table_surface.jpg */,
 				4F8AB9B113215D1E0050A4F9 /* wood.jpg */,
@@ -196,6 +199,7 @@
 				4F8AB9B213215D1E0050A4F9 /* wood.jpg in Resources */,
 				4FB3BA3213218EB9001ED0C2 /* table_surface.jpg in Resources */,
 				4FB3BA48132197A9001ED0C2 /* paddle_140.png in Resources */,
+				4FB3BA7C1321A8CA001ED0C2 /* puck_122.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
