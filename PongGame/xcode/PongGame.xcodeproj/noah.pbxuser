@@ -2,9 +2,9 @@
 {
 	00CFDFDF11384CC60091E310 /* PongGameApp.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1127, 3562}}";
-			sepNavSelRange = "{5866, 0}";
-			sepNavVisRange = "{5422, 1348}";
+			sepNavIntBoundsRect = "{{0, 0}, {1127, 3705}}";
+			sepNavSelRange = "{6246, 0}";
+			sepNavVisRange = "{3659, 766}";
 		};
 	};
 	1D6058900D05DD3D006BFB54 /* PongGame */ = {
@@ -70,21 +70,18 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 320964522;
-			PBXWorkspaceStateSaveDate = 320964522;
+			PBXPerProjectTemplateStateSaveDate = 321549879;
+			PBXWorkspaceStateSaveDate = 321549879;
 		};
 		perUserProjectItems = {
 			4F8AB96513214D660050A4F9 = 4F8AB96513214D660050A4F9 /* PBXTextBookmark */;
 			4F8AB994132157730050A4F9 = 4F8AB994132157730050A4F9 /* PBXTextBookmark */;
 			4F8AB9BE13215EB90050A4F9 = 4F8AB9BE13215EB90050A4F9 /* PBXTextBookmark */;
-			4F8AB9C013215EB90050A4F9 = 4F8AB9C013215EB90050A4F9 /* PBXTextBookmark */;
 			4F8AB9D2132162B50050A4F9 = 4F8AB9D2132162B50050A4F9 /* PBXTextBookmark */;
 			4F9101D21303581C00114D0E = 4F9101D21303581C00114D0E /* PBXTextBookmark */;
 			4F99D4201302FB40000E5BF9 = 4F99D4201302FB40000E5BF9 /* PBXTextBookmark */;
 			4F99D4331302FDED000E5BF9 = 4F99D4331302FDED000E5BF9 /* PBXTextBookmark */;
-			4FB3BA2C132187B0001ED0C2 /* PBXTextBookmark */ = 4FB3BA2C132187B0001ED0C2 /* PBXTextBookmark */;
-			4FB3BA4D132199C3001ED0C2 /* PBXTextBookmark */ = 4FB3BA4D132199C3001ED0C2 /* PBXTextBookmark */;
-			4FB3BA6B1321A0F0001ED0C2 /* PBXTextBookmark */ = 4FB3BA6B1321A0F0001ED0C2 /* PBXTextBookmark */;
+			4FB3BA851322E5A9001ED0C2 = 4FB3BA851322E5A9001ED0C2 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 4F99D3C21302F0D7000E5BF9 /* Source Control */;
 		userBuildSettings = {
@@ -140,16 +137,6 @@
 		name = gl.h;
 		path = /Users/noah/Documents/Cinder/include/cinder/gl/gl.h;
 		sourceTree = "<absolute>";
-	};
-	4F8AB9C013215EB90050A4F9 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
-		name = "PongGameApp.cpp: 228";
-		rLen = 0;
-		rLoc = 5375;
-		rType = 0;
-		vrLen = 975;
-		vrLoc = 4859;
 	};
 	4F8AB9D2132162B50050A4F9 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -256,34 +243,14 @@
 		path = /Users/noah/Documents/Cinder/include/cinder/app/AppCocoaTouch.h;
 		sourceTree = "<absolute>";
 	};
-	4FB3BA2C132187B0001ED0C2 /* PBXTextBookmark */ = {
+	4FB3BA851322E5A9001ED0C2 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
-		name = "PongGameApp.cpp: 60";
+		name = "PongGameApp.cpp: 262";
 		rLen = 0;
-		rLoc = 1505;
+		rLoc = 6246;
 		rType = 0;
-		vrLen = 935;
-		vrLoc = 998;
-	};
-	4FB3BA4D132199C3001ED0C2 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
-		name = "PongGameApp.cpp: 249";
-		rLen = 0;
-		rLoc = 6138;
-		rType = 0;
-		vrLen = 1366;
-		vrLoc = 5273;
-	};
-	4FB3BA6B1321A0F0001ED0C2 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
-		name = "PongGameApp.cpp: 249";
-		rLen = 0;
-		rLoc = 5924;
-		rType = 0;
-		vrLen = 1348;
-		vrLoc = 5422;
+		vrLen = 766;
+		vrLoc = 3659;
 	};
 }

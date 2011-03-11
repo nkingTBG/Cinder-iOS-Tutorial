@@ -43,6 +43,7 @@ public:
 	int userScore, aiScore;
 	
 	Texture texture1, texture2, texture3, paddleTexture, puckTexture;
+	float goalWidth, goalHeight, goalBoxLeft, goalBoxRight;
 };
 
 void PongGame::setup()
@@ -54,13 +55,18 @@ void PongGame::setup()
 	hei = getWindowHeight();
 	rad = 50.0f;
 	touchArea = Vec2f(getWindowWidth(), 100);
-	paddleCenter = Vec2f(getWindowCenter().x, hei - touchArea.y - 70);
-	aiPaddleCenter = Vec2f(wid/2, 70);
 	paddleRadius = 70;
+	goalWidth = wid * 0.25f;
+	goalHeight = 8;
+	goalBoxLeft = goalWidth + goalHeight;
+	goalBoxRight = wid - goalWidth - goalHeight;
+	paddleCenter = Vec2f(getWindowCenter().x, hei - touchArea.y - paddleRadius - goalHeight);
+	aiPaddleCenter = Vec2f(wid/2, paddleRadius + goalHeight);
+	
 	pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius + rad);
-	easingFactor = 0.15f;
-	engageThresh = 0.3f;
-	maxSpeed = 40.0f;
+	easingFactor = 0.05f;
+	engageThresh = 0.03f;
+	maxSpeed = 60.0f;
 	minSpeed = 3.0f;
 	
 	userScore = 0;
@@ -71,7 +77,10 @@ void PongGame::setup()
 	texture3 = Texture( loadImage( loadResource( "table_surface.jpg" ) ) );
 	paddleTexture = Texture( loadImage(loadResource( "paddle_140.png" ) ) );
 	puckTexture = Texture( loadImage(loadResource( "puck_122.png" ) ) );
+	
+	
 }
+
 
 void PongGame::update()
 {	
@@ -161,6 +170,15 @@ void PongGame::boundaries(){
 		pos.x = wid - rad;
 	}
 	
+	if(pos.y - rad <= 0 + goalHeight && (pos.x < goalBoxLeft || pos.x > goalBoxRight)){
+		vel.y *= -1.0f;
+		pos.y = 0 + rad;
+	} else if(pos.y + rad >= hei - touchArea.y - goalHeight && (pos.x < goalBoxLeft || pos.x > goalBoxRight)){
+		vel.y *= -1.0f;
+		pos.y = hei - touchArea.y - goalHeight - rad;
+	}
+	
+	
 	if(pos.y < 0 - rad){
 		userServe = true;
 		userScore++;
@@ -241,12 +259,14 @@ void PongGame::draw()
 	//draw background
 	gl::draw( texture3, getWindowBounds() );
 	
-
+	glEnable( GL_LIGHTING );
 	glEnable( GL_LIGHT2 );
 	GLfloat light_RGB2[] = { 0.6f, 0.6f, 0.6f };
 	glLightfv(GL_LIGHT2, GL_AMBIENT, light_RGB2);
 	
 	//draw paddles
+	glEnable(GL_TEXTURE_2D);
+	glEnable( GL_DEPTH_TEST );
 	paddleTexture.bind();
 	drawCube(Vec3f(paddleCenter.x, paddleCenter.y, 0), Vec3f(140, 140, 0.1f) );
 	drawCube(Vec3f(aiPaddleCenter.x, aiPaddleCenter.y, 0), Vec3f(140, 140, 0.1f) );
@@ -259,6 +279,20 @@ void PongGame::draw()
 	glDisable( GL_LIGHTING );
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_TEXTURE_2D);
+	
+	
+	//draw goal posts
+	//top
+	color(Colorf(0.0f, 0.0f, 0.0f));
+	drawSolidRect(Rectf(0, 0, goalWidth, goalHeight));
+	drawSolidRect(Rectf(wid, 0, wid - goalWidth, goalHeight));
+	drawSolidCircle(Vec2f(goalWidth,0), goalHeight, 24);
+	drawSolidCircle(Vec2f(wid - goalWidth,0), goalHeight, 24);
+	//bottom
+	drawSolidRect(Rectf(0, hei - touchArea.y, goalWidth, hei - touchArea.y - goalHeight));
+	drawSolidRect(Rectf(wid, hei - touchArea.y, wid - goalWidth, hei - touchArea.y - goalHeight));
+	drawSolidCircle(Vec2f(goalWidth, hei - touchArea.y), goalHeight, 24);
+	drawSolidCircle(Vec2f(wid - goalWidth, hei - touchArea.y), goalHeight, 24);
 	
 	//draw touch area
 	color( Colorf(0.0f, 0.0f, 0.0f) );
