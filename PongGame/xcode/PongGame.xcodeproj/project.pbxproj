@@ -14,6 +14,8 @@
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
 		43CD9799123D6504003B628E /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 43CD9798123D6504003B628E /* Icon.png */; };
+		4F47F22E132A8922002F341B /* 1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4F47F22D132A8922002F341B /* 1.wav */; };
+		4F47F230132A892B002F341B /* 2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4F47F22F132A892B002F341B /* 2.wav */; };
 		4F8AB982132150E50050A4F9 /* brushed.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4F8AB981132150E50050A4F9 /* brushed.jpg */; };
 		4F8AB9A1132159F70050A4F9 /* brushed2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4F8AB9A0132159F70050A4F9 /* brushed2.jpg */; };
 		4F8AB9B213215D1E0050A4F9 /* wood.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4F8AB9B113215D1E0050A4F9 /* wood.jpg */; };
@@ -36,6 +38,9 @@
 		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* PongGame_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PongGame_Prefix.pch; sourceTree = "<group>"; };
 		43CD9798123D6504003B628E /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../resources/Icon.png; sourceTree = SOURCE_ROOT; };
+		4F47F22C132A88E6002F341B /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resources.h; sourceTree = "<group>"; };
+		4F47F22D132A8922002F341B /* 1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = 1.wav; path = ../resources/1.wav; sourceTree = SOURCE_ROOT; };
+		4F47F22F132A892B002F341B /* 2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = 2.wav; path = ../resources/2.wav; sourceTree = SOURCE_ROOT; };
 		4F8AB981132150E50050A4F9 /* brushed.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = brushed.jpg; path = ../resources/brushed.jpg; sourceTree = SOURCE_ROOT; };
 		4F8AB9A0132159F70050A4F9 /* brushed2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = brushed2.jpg; path = ../resources/brushed2.jpg; sourceTree = SOURCE_ROOT; };
 		4F8AB9B113215D1E0050A4F9 /* wood.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = wood.jpg; path = ../resources/wood.jpg; sourceTree = SOURCE_ROOT; };
@@ -80,6 +85,7 @@
 		00CFDFB81138492F0091E310 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				4F47F22C132A88E6002F341B /* Resources.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -116,6 +122,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4F47F22F132A892B002F341B /* 2.wav */,
+				4F47F22D132A8922002F341B /* 1.wav */,
 				4FB3BA7B1321A8CA001ED0C2 /* puck_122.png */,
 				4FB3BA47132197A9001ED0C2 /* paddle_140.png */,
 				4FB3BA3113218EB9001ED0C2 /* table_surface.jpg */,
@@ -200,6 +208,8 @@
 				4FB3BA3213218EB9001ED0C2 /* table_surface.jpg in Resources */,
 				4FB3BA48132197A9001ED0C2 /* paddle_140.png in Resources */,
 				4FB3BA7C1321A8CA001ED0C2 /* puck_122.png in Resources */,
+				4F47F22E132A8922002F341B /* 1.wav in Resources */,
+				4F47F230132A892B002F341B /* 2.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

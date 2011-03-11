@@ -2,9 +2,9 @@
 {
 	00CFDFDF11384CC60091E310 /* PongGameApp.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1127, 3705}}";
-			sepNavSelRange = "{6246, 0}";
-			sepNavVisRange = "{3659, 766}";
+			sepNavIntBoundsRect = "{{0, 0}, {782, 4498}}";
+			sepNavSelRange = "{5060, 0}";
+			sepNavVisRange = "{4920, 927}";
 		};
 	};
 	1D6058900D05DD3D006BFB54 /* PongGame */ = {
@@ -143,7 +143,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 60";
 		rLen = 0;
-		rLoc = 1505;
+		rLoc = 1875;
 		rType = 0;
 		vrLen = 897;
 		vrLoc = 998;
@@ -248,7 +248,7 @@
 		fRef = 00CFDFDF11384CC60091E310 /* PongGameApp.cpp */;
 		name = "PongGameApp.cpp: 262";
 		rLen = 0;
-		rLoc = 6246;
+		rLoc = 7640;
 		rType = 0;
 		vrLen = 766;
 		vrLoc = 3659;

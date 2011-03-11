@@ -1,4 +1,6 @@
 #include "cinder/app/AppCocoaTouch.h"
+#include "cinder/audio/Output.h"
+#include "cinder/audio/Io.h"
 #include "cinder/app/App.h"
 #include "cinder/app/Renderer.h"
 #include "cinder/Surface.h"
@@ -9,6 +11,7 @@
 #include "cinder/gl/Fbo.h"
 #include <iostream>
 #include <sstream>
+#include "Resources.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -44,6 +47,8 @@ public:
 	
 	Texture texture1, texture2, texture3, paddleTexture, puckTexture;
 	float goalWidth, goalHeight, goalBoxLeft, goalBoxRight;
+	
+	audio::SourceRef sound1, sound2;
 };
 
 void PongGame::setup()
@@ -79,7 +84,8 @@ void PongGame::setup()
 	paddleTexture = Texture( loadImage(loadResource( "paddle_140.png" ) ) );
 	puckTexture = Texture( loadImage(loadResource( "puck_122.png" ) ) );
 	
-	
+	sound1 = audio::load( loadResource(RES_SOUND1) );
+	sound2 = audio::load( loadResource(RES_SOUND2) );
 }
 
 
@@ -155,7 +161,8 @@ void PongGame::collisions(Vec2f paddle, float paddleLast_, bool is_ai)
 		Vec2f velocityChange = collisionDir * totalForce;
 		collisionVel -= velocityChange;
 		vel = collisionVel + paddleVel;
-		paddleVel += velocityChange; 
+		paddleVel += velocityChange;
+		audio::Output::play(sound1);
 	} else {
 		colliding = false;
 	}
@@ -166,26 +173,32 @@ void PongGame::boundaries(){
 	if(pos.x < 0 + rad){
 		vel.x *= -0.65f;
 		pos.x = 0 + rad;
+		audio::Output::play(sound1);
 	} else if(pos.x > wid - rad){
 		vel.x *= -0.65f;
 		pos.x = wid - rad;
+		audio::Output::play(sound1);
 	}
 	
 	if(pos.y - rad <= 0 + goalHeight && (pos.x < goalBoxLeft || pos.x > goalBoxRight)){
 		vel.y *= -0.65f;
 		pos.y = 0 + rad;
+		audio::Output::play(sound1);
 	} else if(pos.y + rad >= hei - touchArea.y - goalHeight && (pos.x < goalBoxLeft || pos.x > goalBoxRight)){
 		vel.y *= -0.65f;
 		pos.y = hei - touchArea.y - goalHeight - rad;
+		audio::Output::play(sound1);
 	}
 	
 	
 	if(pos.y < 0 - rad){
 		userServe = true;
 		userScore++;
+		audio::Output::play(sound2);
 		serveBall();
 	} else if (pos.y > hei -touchArea.y + rad){
 		userServe = false;
+		audio::Output::play(sound2);
 		aiScore++;
 		serveBall();
 	}
