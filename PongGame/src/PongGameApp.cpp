@@ -53,7 +53,8 @@ void PongGame::setup()
 	acc = Vec2f(0,0);
 	wid = getWindowWidth();
 	hei = getWindowHeight();
-	rad = 50.0f;
+	//rad = 50.0f;
+	rad = 25.0f;
 	touchArea = Vec2f(getWindowWidth(), 100);
 	paddleRadius = 70;
 	goalWidth = wid * 0.25f;
@@ -163,18 +164,18 @@ void PongGame::collisions(Vec2f paddle, float paddleLast_, bool is_ai)
 
 void PongGame::boundaries(){
 	if(pos.x < 0 + rad){
-		vel.x *= -1.0f;
+		vel.x *= -0.65f;
 		pos.x = 0 + rad;
 	} else if(pos.x > wid - rad){
-		vel.x *= -1.0f;
+		vel.x *= -0.65f;
 		pos.x = wid - rad;
 	}
 	
 	if(pos.y - rad <= 0 + goalHeight && (pos.x < goalBoxLeft || pos.x > goalBoxRight)){
-		vel.y *= -1.0f;
+		vel.y *= -0.65f;
 		pos.y = 0 + rad;
 	} else if(pos.y + rad >= hei - touchArea.y - goalHeight && (pos.x < goalBoxLeft || pos.x > goalBoxRight)){
-		vel.y *= -1.0f;
+		vel.y *= -0.65f;
 		pos.y = hei - touchArea.y - goalHeight - rad;
 	}
 	
