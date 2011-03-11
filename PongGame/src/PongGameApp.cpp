@@ -72,7 +72,7 @@ void PongGame::setup()
 	pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius + rad);
 	easingFactor = 0.05f;
 	engageThresh = 0.03f;
-	maxSpeed = 60.0f;
+	maxSpeed = 100.0f;
 	minSpeed = 3.0f;
 	
 	userScore = 0;
@@ -266,8 +266,7 @@ void PongGame::mouseDrag( MouseEvent event )
 void PongGame::draw()
 {
 	clear();
-	
-	
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable( GL_DEPTH_TEST );
