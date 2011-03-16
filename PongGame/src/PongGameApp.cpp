@@ -26,6 +26,9 @@ public:
 	virtual void	draw();
 	virtual void	mouseDown( MouseEvent event );
 	virtual void	mouseDrag( MouseEvent event );
+    virtual void    touchesBegan( TouchEvent event);
+    virtual void    touchesMoved( TouchEvent event);
+    virtual void    touchesEnded( TouchEvent event);
 	virtual void	serveBall();
 	
 	virtual void	boundaries();
@@ -261,6 +264,54 @@ void PongGame::mouseDrag( MouseEvent event )
 			pos.x = paddleCenter.x;
 		}
 	}
+}
+
+void PongGame::touchesBegan( TouchEvent event)
+{
+    for( vector<TouchEvent::Touch>::const_iterator t_iterator = event.getTouches().begin(); t_iterator != event.getTouches().end(); ++t_iterator ) {
+        //if(t_iterator->getId() == 1){
+            if(t_iterator->getY() > hei - touchArea.y){
+                paddleLast = paddleCenter.x;
+                paddleCenter.x = t_iterator->getPos().x;
+                if (paddleCenter.x < paddleRadius) {
+                    paddleCenter.x = paddleRadius;
+                } else if (paddleCenter.x > wid - paddleRadius) {
+                    paddleCenter.x = wid - paddleRadius;
+                }
+                if(serve && userServe){
+                    pos.x = paddleCenter.x;
+                }
+                
+            } else if(serve){
+                serve = false;
+            }
+       // }
+    }
+}
+
+void PongGame::touchesMoved( TouchEvent event)
+{
+    for( vector<TouchEvent::Touch>::const_iterator t_iterator = event.getTouches().begin(); t_iterator != event.getTouches().end(); ++t_iterator ) {
+        //if(t_iterator->getId() == 1){
+            if(t_iterator->getY() > hei - touchArea.y){
+                paddleLast = paddleCenter.x;
+                paddleCenter.x = t_iterator->getPos().x;
+                if (paddleCenter.x < paddleRadius) {
+                    paddleCenter.x = paddleRadius;
+                } else if (paddleCenter.x > wid - paddleRadius) {
+                    paddleCenter.x = wid - paddleRadius;
+                }
+                if(serve && userServe){
+                    pos.x = paddleCenter.x;
+                }
+            }
+        //}
+    }
+}
+
+void PongGame::touchesEnded( TouchEvent event)
+{
+    
 }
 
 void PongGame::draw()
