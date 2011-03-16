@@ -24,25 +24,21 @@ public:
 	virtual void	resize( ResizeEvent event );
 	virtual void	update();
 	virtual void	draw();
-	virtual void	mouseDown( MouseEvent event );
-	virtual void	mouseDrag( MouseEvent event );
     virtual void    touchesBegan( TouchEvent event);
     virtual void    touchesMoved( TouchEvent event);
     virtual void    touchesEnded( TouchEvent event);
 	virtual void	serveBall();
 	
 	virtual void	boundaries();
-	virtual void	collisions(Vec2f, float, bool);
+	virtual void	collisions(Vec2f, Vec2f, bool);
 	virtual void	aiPaddle();
 	
 	Vec2f pos, vel, acc;
 	float wid, hei, rad;
-	Vec2f paddleCenter, aiPaddleCenter;
+	Vec2f paddleCenter, aiPaddleCenter, paddleLast, aiPaddleLast, paddleVel;
 	float paddleRadius;
 	
-	Vec2f touchArea;
 	bool serve, colliding, userServe;
-	float paddleLast, aiPaddleLast;
 	float easingFactor, engageThresh;
 	float maxSpeed, minSpeed;
 	
@@ -63,13 +59,12 @@ void PongGame::setup()
 	hei = getWindowHeight();
 	//rad = 50.0f;
 	rad = 25.0f;
-	touchArea = Vec2f(getWindowWidth(), 130);
 	paddleRadius = 50.0f;
 	goalWidth = wid * 0.20f;
 	goalHeight = 8;
 	goalBoxLeft = goalWidth + goalHeight;
 	goalBoxRight = wid - goalWidth - goalHeight;
-	paddleCenter = Vec2f(getWindowCenter().x, hei - touchArea.y - paddleRadius - goalHeight);
+	paddleCenter = Vec2f(getWindowCenter().x, hei - paddleRadius - goalHeight);
 	aiPaddleCenter = Vec2f(wid/2, paddleRadius + goalHeight);
 	
 	pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius + rad);
@@ -117,8 +112,8 @@ void PongGame::update()
 
 void PongGame::aiPaddle()
 {	
-	engageThresh = 1 - ( pos.y / (hei - touchArea.y) );
-	aiPaddleLast = aiPaddleCenter.x;
+	engageThresh = 1 - ( pos.y / (hei) );
+	aiPaddleLast = aiPaddleCenter;
 	float puckX = pos.x;
 	if(puckX < goalBoxLeft){
 		puckX = goalBoxLeft;
@@ -128,7 +123,7 @@ void PongGame::aiPaddle()
 	aiPaddleCenter.x -= (aiPaddleCenter.x - puckX) * easingFactor * engageThresh;
 }
 
-void PongGame::collisions(Vec2f paddle, float paddleLast_, bool is_ai)
+void PongGame::collisions(Vec2f paddle, Vec2f paddleLast_, bool is_ai)
 {
 	int mult;
 	if(is_ai){
@@ -151,7 +146,8 @@ void PongGame::collisions(Vec2f paddle, float paddleLast_, bool is_ai)
 		
 		collisionDir.normalize();
 		
-		float paddleSpeed = paddle.x - paddleLast_;
+        Vec2f paddleVelocity = paddle - paddleLast_;
+		float paddleSpeed = paddleVelocity.length() ;
 		if(paddleSpeed > 14){
 			paddleSpeed = 14;
 		}
@@ -192,9 +188,9 @@ void PongGame::boundaries(){
 		vel.y *= -0.65f;
 		pos.y = 0 + rad + goalHeight;
 		audio::Output::play(sound1);
-	} else if(pos.y + rad >= hei - touchArea.y - goalHeight && (pos.x < goalBoxLeft || pos.x > goalBoxRight)){
+	} else if(pos.y + rad >= hei - goalHeight && (pos.x < goalBoxLeft || pos.x > goalBoxRight)){
 		vel.y *= -0.65f;
-		pos.y = hei - touchArea.y - goalHeight - rad;
+		pos.y = hei - goalHeight - rad;
 		audio::Output::play(sound1);
 	}
 	
@@ -204,7 +200,7 @@ void PongGame::boundaries(){
 		userScore++;
 		audio::Output::play(sound2);
 		serveBall();
-	} else if (pos.y > hei -touchArea.y + rad){
+	} else if (pos.y > hei + rad){
 		userServe = false;
 		audio::Output::play(sound2);
 		aiScore++;
@@ -215,7 +211,7 @@ void PongGame::boundaries(){
 void PongGame::serveBall(){
 	if(userServe){
 		pos = Vec2f(paddleCenter.x, paddleCenter.y - paddleRadius - rad);
-		vel = Vec2f( Rand::randFloat(-10, 10), -10 );
+		vel = paddleVel;
 	} else {
 		pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius + rad);
 		vel = Vec2f( Rand::randFloat(-10, 10), 10 );
@@ -231,81 +227,43 @@ void PongGame::resize( ResizeEvent event )
 	setWindowSize(event.getWidth(), event.getHeight());
 }
 
-void PongGame::mouseDown( MouseEvent event )
-{
-	if(event.getY() > hei - touchArea.y){
-		paddleLast = paddleCenter.x;
-		paddleCenter.x = event.getPos().x;
-		if (paddleCenter.x < paddleRadius) {
-			paddleCenter.x = paddleRadius;
-		} else if (paddleCenter.x > wid - paddleRadius) {
-			paddleCenter.x = wid - paddleRadius;
-		}
-		if(serve && userServe){
-			pos.x = paddleCenter.x;
-		}
-		
-	} else if(serve){
-		serve = false;
-	}
-}
-
-void PongGame::mouseDrag( MouseEvent event )
-{
-	if(event.getY() > hei - touchArea.y){
-		paddleLast = paddleCenter.x;
-		paddleCenter.x = event.getPos().x;
-		if (paddleCenter.x < paddleRadius) {
-			paddleCenter.x = paddleRadius;
-		} else if (paddleCenter.x > wid - paddleRadius) {
-			paddleCenter.x = wid - paddleRadius;
-		}
-		if(serve && userServe){
-			pos.x = paddleCenter.x;
-		}
-	}
-}
-
 void PongGame::touchesBegan( TouchEvent event)
-{
-    for( vector<TouchEvent::Touch>::const_iterator t_iterator = event.getTouches().begin(); t_iterator != event.getTouches().end(); ++t_iterator ) {
-        //if(t_iterator->getId() == 1){
-            if(t_iterator->getY() > hei - touchArea.y){
-                paddleLast = paddleCenter.x;
-                paddleCenter.x = t_iterator->getPos().x;
-                if (paddleCenter.x < paddleRadius) {
-                    paddleCenter.x = paddleRadius;
-                } else if (paddleCenter.x > wid - paddleRadius) {
-                    paddleCenter.x = wid - paddleRadius;
-                }
-                if(serve && userServe){
-                    pos.x = paddleCenter.x;
-                }
-                
-            } else if(serve){
+{   
+    if(serve){
+        for( vector<TouchEvent::Touch>::const_iterator t_iterator = event.getTouches().begin(); t_iterator != event.getTouches().end(); ++t_iterator ) {
+            if(t_iterator->getY() > hei * 0.3 && t_iterator->getY() < hei * 0.7){
                 serve = false;
             }
-       // }
+        }
     }
 }
 
 void PongGame::touchesMoved( TouchEvent event)
 {
     for( vector<TouchEvent::Touch>::const_iterator t_iterator = event.getTouches().begin(); t_iterator != event.getTouches().end(); ++t_iterator ) {
-        //if(t_iterator->getId() == 1){
-            if(t_iterator->getY() > hei - touchArea.y){
-                paddleLast = paddleCenter.x;
-                paddleCenter.x = t_iterator->getPos().x;
-                if (paddleCenter.x < paddleRadius) {
-                    paddleCenter.x = paddleRadius;
-                } else if (paddleCenter.x > wid - paddleRadius) {
-                    paddleCenter.x = wid - paddleRadius;
-                }
-                if(serve && userServe){
-                    pos.x = paddleCenter.x;
-                }
+        if(t_iterator->getY() > hei/2 ){
+            paddleLast = paddleCenter;
+            paddleCenter = t_iterator->getPos();
+            paddleVel = paddleCenter - paddleLast;
+            if (paddleCenter.x < paddleRadius) {
+                paddleCenter.x = paddleRadius;
+            } else if (paddleCenter.x > wid - paddleRadius) {
+                paddleCenter.x = wid - paddleRadius;
             }
-        //}
+            if (paddleCenter.y < hei * 0.7f + paddleRadius) {
+                paddleCenter.y = hei * 0.7f + paddleRadius;
+            } else if (paddleCenter.y > hei - paddleRadius - goalHeight) {
+                paddleCenter.y = hei - paddleRadius - goalHeight;
+            }
+            if(serve && userServe){
+                Vec2f paddleDirection = paddleVel;
+                paddleDirection.normalize();
+                pos = paddleCenter + paddleDirection * (rad + paddleRadius);
+            }
+            if(t_iterator->getY() > hei * 0.3 && t_iterator->getY() < hei * 0.7){
+                serve = false;
+            }
+        }
     }
 }
 
@@ -337,7 +295,7 @@ void PongGame::draw()
 	glLightfv(GL_LIGHT1, GL_AMBIENT, light_RGB);
 	
 	//draw background
-	gl::draw( texture3, Rectf(0,0,wid, hei - touchArea.y) );
+	gl::draw( texture3, Rectf(0,0,wid, hei) );
 	
 	glEnable( GL_LIGHTING );
 	glEnable( GL_LIGHT2 );
@@ -353,7 +311,8 @@ void PongGame::draw()
 	
 	//draw puck
 	puckTexture.bind();
-	drawCube( Vec3f(pos.x, pos.y, 0), Vec3f(rad * 2,rad * 2, 0.1f) );
+
+	drawSphere( Vec3f(pos.x, pos.y, 0), rad, 32 );
 	
 	glDisable(GL_LIGHT2);
 	glDisable( GL_LIGHTING );
@@ -369,15 +328,15 @@ void PongGame::draw()
 	drawSolidCircle(Vec2f(goalWidth,0), goalHeight, 24);
 	drawSolidCircle(Vec2f(wid - goalWidth,0), goalHeight, 24);
 	//bottom
-	drawSolidRect(Rectf(0, hei - touchArea.y, goalWidth, hei - touchArea.y - goalHeight));
-	drawSolidRect(Rectf(wid, hei - touchArea.y, wid - goalWidth, hei - touchArea.y - goalHeight));
-	drawSolidCircle(Vec2f(goalWidth, hei - touchArea.y), goalHeight, 24);
-	drawSolidCircle(Vec2f(wid - goalWidth, hei - touchArea.y), goalHeight, 24);
+	drawSolidRect(Rectf(0, hei, goalWidth, hei - goalHeight));
+	drawSolidRect(Rectf(wid, hei, wid - goalWidth, hei - goalHeight));
+	drawSolidCircle(Vec2f(goalWidth, hei), goalHeight, 24);
+	drawSolidCircle(Vec2f(wid - goalWidth, hei), goalHeight, 24);
 	
 	//draw touch area
 	color( Colorf(0.0f, 0.0f, 0.0f) );
-	drawSolidRect( Rectf(wid, hei, 0, hei - touchArea.y  ) );
-	drawString( "Touch Area", Vec2f(50, hei - touchArea.y), Colorf(0.3f, 0.3f, 0.3f), Font( "Gill Sans", 40 ) );
+	drawSolidRect( Rectf(wid, hei, 0, hei  ) );
+	drawString( "Touch Area", Vec2f(50, hei), Colorf(0.3f, 0.3f, 0.3f), Font( "Gill Sans", 40 ) );
 	
 	if(serve){
 		drawString( "Touch to Serve", Vec2f(wid * 0.25f, hei * 0.4f), Colorf(0, 0, 0), Font( "Gill Sans", 60 ) );
