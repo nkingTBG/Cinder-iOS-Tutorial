@@ -69,7 +69,7 @@ void PongGame::setup()
 	//aiPaddleCenter = Vec2f(wid/2, paddleRadius + goalHeight);
 	
 	//pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius + rad);
-    pos = Vec2f(wid/2, hei * 0.7f + rad);
+    pos = Vec2f(wid/2, hei * 0.8f);
     vel = Vec2f(0,0);
     paddleCenter = Vec2f(wid/2, hei - paddleRadius - goalHeight);
     aiPaddleCenter = Vec2f( wid/2, paddleRadius + goalHeight);
@@ -116,7 +116,6 @@ void PongGame::update()
 		collisions(paddleCenter, paddleVel);
 	//}
     
-    cout << "pos=" << pos << ",vel=" << vel <<endl;
 }
 
 void PongGame::aiPaddle()
@@ -126,13 +125,13 @@ void PongGame::aiPaddle()
         engageThreshY = 0;   
     }
 	aiPaddleLast = aiPaddleCenter;
-	/*if(aiPaddleCenter.x < goalBoxLeft){
-		aiPaddleCenter.x = goalBoxLeft;
-	} else if (aiPaddleCenter.x > goalBoxRight) {
-		aiPaddleCenter.x = goalBoxRight;
-	}*/
-    if(aiPaddleCenter.y >= hei * 0.3f - paddleRadius){
-        aiPaddleCenter.y = hei * 0.3f - paddleRadius;
+	if(aiPaddleCenter.x < paddleRadius + rad){
+		aiPaddleCenter.x = paddleRadius + rad;
+	} else if (aiPaddleCenter.x > wid - paddleRadius - rad) {
+		aiPaddleCenter.x = wid - paddleRadius - rad;
+	}
+    if(aiPaddleCenter.y >= hei * 0.3f){
+        aiPaddleCenter.y = hei * 0.3f;
     } else if (aiPaddleCenter.y <= paddleRadius + goalHeight){
         aiPaddleCenter.y = paddleRadius + goalHeight;
     }
@@ -157,7 +156,7 @@ void PongGame::collisions(Vec2f paddle_, Vec2f paddleVel_)
 	float distanceSQ	= (paddle_.x - pos.x)*(paddle_.x - pos.x) + (paddle_.y - pos.y)*(paddle_.y - pos.y);
 	
 	
-	if( distanceSQ <= minDistanceSQ && colliding == false ){
+	if( distanceSQ < minDistanceSQ && colliding == false ){
 		//if the distance is less then the threshold, collision was detected
         colliding = true;
         
@@ -218,12 +217,12 @@ void PongGame::boundaries(){
 
 void PongGame::serveBall(){
 	if(userServe){
-		pos = Vec2f(wid/2, hei * 0.7f + rad);
+		pos = Vec2f(wid/2, hei * 0.8f);
 		vel = Vec2f(0,0);
         paddleCenter = Vec2f(wid/2, hei - paddleRadius - goalHeight);
         aiPaddleCenter = Vec2f( wid/2, paddleRadius + goalHeight);
 	} else {
-		pos = Vec2f(wid/2, hei * 0.3f - rad);
+		pos = Vec2f(wid/2, hei * 0.2f);
         vel = Vec2f(0,0);
         aiPaddleCenter = Vec2f( Rand::randFloat(paddleRadius, wid - paddleRadius), paddleRadius + goalHeight);
 	}
