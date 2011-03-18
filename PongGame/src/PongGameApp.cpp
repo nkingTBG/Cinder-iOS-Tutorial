@@ -48,35 +48,35 @@ public:
 	float goalWidth, goalHeight, goalBoxLeft, goalBoxRight;
 	
 	audio::SourceRef sound1, sound2;
+    
+    bool touchMoved;
 };
 
 void PongGame::setup()
 {
 	userServe = true;
     serve = false;
+    touchMoved = false;
 	
 	acc = Vec2f(0,0);
 	wid = getWindowWidth();
 	hei = getWindowHeight();
-	//rad = 50.0f;
-	rad = 25.0f;
+
+	rad = 35.0f;
 	paddleRadius = 50.0f;
 	goalWidth = wid * 0.20f;
 	goalHeight = 8;
 	goalBoxLeft = goalWidth + goalHeight;
 	goalBoxRight = wid - goalWidth - goalHeight;
-	//paddleCenter = Vec2f(getWindowCenter().x, hei - paddleRadius - goalHeight);
-	//aiPaddleCenter = Vec2f(wid/2, paddleRadius + goalHeight);
-	
-	//pos = Vec2f(aiPaddleCenter.x, aiPaddleCenter.y + paddleRadius + rad);
+
     pos = Vec2f(wid/2, hei * 0.8f);
     vel = Vec2f(0,0);
     paddleCenter = Vec2f(wid/2, hei - paddleRadius - goalHeight);
     aiPaddleCenter = Vec2f( wid/2, paddleRadius + goalHeight);
     
-	easingFactorX = 0.05f;
-    easingFactorY = 0.15f;
-	maxSpeed = 100.0f;
+	easingFactorX = 0.08f;
+    easingFactorY = 0.2f;
+	maxSpeed = 50.0f;
 	minSpeed = 3.0f;
 	
 	userScore = 0;
@@ -91,6 +91,7 @@ void PongGame::setup()
 	sound1 = audio::load( loadResource(RES_SOUND1) );
 	sound2 = audio::load( loadResource(RES_SOUND2) );
    // serveBall();
+
 }
 
 
@@ -112,10 +113,18 @@ void PongGame::update()
 		aiPaddle();
 		boundaries();
 		
+        
+        //paddleVel = paddleCenter - paddleLast;
+    
 		collisions(aiPaddleCenter, aiPaddleVel);
 		collisions(paddleCenter, paddleVel);
 	//}
+    if(!touchMoved){
+        paddleLast = paddleCenter;
+        paddleVel = paddleCenter - paddleLast;   
+    }
     
+    touchMoved = false;
 }
 
 void PongGame::aiPaddle()
@@ -124,17 +133,9 @@ void PongGame::aiPaddle()
     if(engageThreshY < 0 || vel.y > 0){
         engageThreshY = 0;   
     }
+
 	aiPaddleLast = aiPaddleCenter;
-	if(aiPaddleCenter.x < paddleRadius + rad){
-		aiPaddleCenter.x = paddleRadius + rad;
-	} else if (aiPaddleCenter.x > wid - paddleRadius - rad) {
-		aiPaddleCenter.x = wid - paddleRadius - rad;
-	}
-    if(aiPaddleCenter.y >= hei * 0.3f){
-        aiPaddleCenter.y = hei * 0.3f;
-    } else if (aiPaddleCenter.y <= paddleRadius + goalHeight){
-        aiPaddleCenter.y = paddleRadius + goalHeight;
-    }
+	
     aiPaddleCenter.x -= (aiPaddleCenter.x - pos.x) * easingFactorX;
     if(vel.y > 0 && pos.y > hei/2){
         aiPaddleCenter.y -= (aiPaddleCenter.y - paddleRadius - goalHeight) * easingFactorY;
@@ -142,10 +143,19 @@ void PongGame::aiPaddle()
         aiPaddleCenter.y -= (aiPaddleCenter.y - pos.y) * easingFactorY * engageThreshY;
     }
 	
+    if(aiPaddleCenter.x < paddleRadius + rad * 2){
+		aiPaddleCenter.x = paddleRadius + rad * 2;
+	} else if (aiPaddleCenter.x > wid - paddleRadius - rad * 2) {
+		aiPaddleCenter.x = wid - paddleRadius - rad * 2;
+	}
+    if(aiPaddleCenter.y >= hei * 0.3f){
+        aiPaddleCenter.y = hei * 0.3f;
+    } else if (aiPaddleCenter.y <= paddleRadius + goalHeight){
+        aiPaddleCenter.y = paddleRadius + goalHeight;
+    }
+
     aiPaddleVel = aiPaddleCenter - aiPaddleLast;
-   /* if(aiPaddleVel.y <= 0){
-        aiPaddleVel.y = vel.y * -1;
-    }*/
+
 }
 
 void PongGame::collisions(Vec2f paddle_, Vec2f paddleVel_)
@@ -160,18 +170,26 @@ void PongGame::collisions(Vec2f paddle_, Vec2f paddleVel_)
 		//if the distance is less then the threshold, collision was detected
         colliding = true;
         
+        if(paddleVel_.length() < 1){
+            Vec2f collisionDir = paddle_ - pos;
+            collisionDir.safeNormalize();
+            pos = paddle_ - ( (paddleRadius + rad) * collisionDir );
+            vel *= -0.6f;
+        } else {
         
-		Vec2f collisionDir = paddle_ - pos;
-		collisionDir.normalize();
-		pos = paddle_ - ( (paddleRadius + rad) * collisionDir );
-		
-		Vec2f netVel = paddleVel_ - vel;
-        
-		float totalForce = collisionDir.x * netVel.x + collisionDir.y * netVel.y;
-		Vec2f collisionVector = collisionDir * totalForce;
-        
-        netVel -= collisionVector;
-        vel = netVel + paddleVel;
+            Vec2f collisionDir = paddle_ - pos;
+            collisionDir.normalize();
+            pos = paddle_ - ( (paddleRadius + rad) * collisionDir );
+            
+            Vec2f netVel = paddleVel_ - vel;
+            
+            float totalForce = collisionDir.x * netVel.x + collisionDir.y * netVel.y;
+            totalForce *= 0.6f;
+            Vec2f collisionVector = collisionDir * totalForce;
+            
+            netVel -= collisionVector;
+            vel = netVel + paddleVel_;
+        }
         
 		audio::Output::play(sound1);
 	} else {
@@ -232,8 +250,6 @@ void PongGame::serveBall(){
 
 void PongGame::resize( ResizeEvent event )
 {
-	//mCam.lookAt( Vec3f( 0, 0, -hei * 2.2f ), Vec3f::zero(), Vec3f(0,-1,0) );
-	//mCam.setPerspective( 60, event.getAspectRatio(), 1, 2000 );
 	setWindowSize(event.getWidth(), event.getHeight());
 }
 
@@ -250,6 +266,7 @@ void PongGame::touchesBegan( TouchEvent event)
 
 void PongGame::touchesMoved( TouchEvent event)
 {
+    touchMoved = true;
     for( vector<TouchEvent::Touch>::const_iterator t_iterator = event.getTouches().begin(); t_iterator != event.getTouches().end(); ++t_iterator ) {
         if(t_iterator->getY() > hei/2 ){
             paddleLast = paddleCenter;
@@ -278,8 +295,9 @@ void PongGame::touchesMoved( TouchEvent event)
 }
 
 void PongGame::touchesEnded( TouchEvent event)
-{
-    
+{   
+    paddleLast = paddleCenter;
+    paddleVel = paddleCenter - paddleLast;
 }
 
 void PongGame::draw()
