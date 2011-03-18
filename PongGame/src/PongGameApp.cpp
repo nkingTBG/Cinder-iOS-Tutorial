@@ -39,7 +39,7 @@ public:
 	float paddleRadius;
 	
 	bool serve, colliding, userServe;
-	float easingFactorX, easingFactorY;
+	float easingFactorX, easingFactorY, easingFactorServe;
 	float maxSpeed, minSpeed;
 	
 	int userScore, aiScore;
@@ -76,6 +76,7 @@ void PongGame::setup()
     
 	easingFactorX = 0.08f;
     easingFactorY = 0.2f;
+    easingFactorServe = 0.25f;
 	maxSpeed = 50.0f;
 	minSpeed = 3.0f;
 	
@@ -98,7 +99,7 @@ void PongGame::setup()
 void PongGame::update()
 {	
 	if (serve) {
-		
+		serveBall();
 	} else{
         
 		vel += acc;
@@ -238,14 +239,19 @@ void PongGame::boundaries(){
 
 void PongGame::serveBall(){
 	if(userServe){
-		pos = Vec2f(wid/2, hei * 0.8f);
 		vel = Vec2f(0,0);
-        paddleCenter = Vec2f(wid/2, hei - paddleRadius - goalHeight);
-        aiPaddleCenter = Vec2f( wid/2, paddleRadius + goalHeight);
+        Vec2f targetPos = Vec2f(wid/2, hei * 0.8f);
+        Vec2f targetPaddleCenter = Vec2f(wid/2, hei - paddleRadius - goalHeight);
+        Vec2f targetAiPaddleCenter = Vec2f( wid/2, paddleRadius + goalHeight);
+        pos -= (pos - targetPos) * easingFactorServe;
+        paddleCenter -= (paddleCenter - targetPaddleCenter) * easingFactorServe;
+        aiPaddleCenter -= (aiPaddleCenter - targetAiPaddleCenter) * easingFactorServe;
 	} else {
-		pos = Vec2f(wid/2, hei * 0.2f);
         vel = Vec2f(0,0);
-        aiPaddleCenter = Vec2f( Rand::randFloat(paddleRadius, wid - paddleRadius), paddleRadius + goalHeight);
+        Vec2f targetPos = Vec2f(wid/2, hei * 0.2f);
+        Vec2f targetAiPaddleCenter = Vec2f( Rand::randFloat(paddleRadius, wid - paddleRadius), paddleRadius + goalHeight);
+        pos -= (pos - targetPos) * easingFactorServe;
+        aiPaddleCenter -= (aiPaddleCenter - targetAiPaddleCenter) * easingFactorServe;
 	}
 	serve = true;
 	colliding = false;
@@ -262,6 +268,7 @@ void PongGame::touchesBegan( TouchEvent event)
         for( vector<TouchEvent::Touch>::const_iterator t_iterator = event.getTouches().begin(); t_iterator != event.getTouches().end(); ++t_iterator ) {
             if(t_iterator->getY() > hei * 0.3 && t_iterator->getY() < hei * 0.7){
                 serve = false;
+                vel = Vec2f(0,0);
             }
         }
     }
