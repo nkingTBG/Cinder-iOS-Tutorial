@@ -55,7 +55,7 @@ public:
 void PongGame::setup()
 {
 	userServe = true;
-    serve = false;
+    serve = true;
     touchMoved = false;
 	
 	acc = Vec2f(0,0);
@@ -97,9 +97,10 @@ void PongGame::setup()
 
 void PongGame::update()
 {	
-	//if (serve) {
+	if (serve) {
 		
-	//} else{
+	} else{
+        
 		vel += acc;
 		float velSpeed = vel.lengthSquared();
 		if(velSpeed > maxSpeed * maxSpeed){
@@ -118,13 +119,15 @@ void PongGame::update()
     
 		collisions(aiPaddleCenter, aiPaddleVel);
 		collisions(paddleCenter, paddleVel);
-	//}
-    if(!touchMoved){
-        paddleLast = paddleCenter;
-        paddleVel = paddleCenter - paddleLast;   
+	
+        if(!touchMoved){
+            paddleLast = paddleCenter;
+            paddleVel = paddleCenter - paddleLast;   
+        }
+        
+        touchMoved = false;
+        
     }
-    
-    touchMoved = false;
 }
 
 void PongGame::aiPaddle()
@@ -244,7 +247,7 @@ void PongGame::serveBall(){
         vel = Vec2f(0,0);
         aiPaddleCenter = Vec2f( Rand::randFloat(paddleRadius, wid - paddleRadius), paddleRadius + goalHeight);
 	}
-	//serve = true;
+	serve = true;
 	colliding = false;
 }
 
@@ -265,33 +268,27 @@ void PongGame::touchesBegan( TouchEvent event)
 }
 
 void PongGame::touchesMoved( TouchEvent event)
-{
-    touchMoved = true;
-    for( vector<TouchEvent::Touch>::const_iterator t_iterator = event.getTouches().begin(); t_iterator != event.getTouches().end(); ++t_iterator ) {
-        if(t_iterator->getY() > hei/2 ){
-            paddleLast = paddleCenter;
-            paddleCenter = t_iterator->getPos();
-            paddleVel = paddleCenter - paddleLast;
-            if (paddleCenter.x < paddleRadius) {
-                paddleCenter.x = paddleRadius;
-            } else if (paddleCenter.x > wid - paddleRadius) {
-                paddleCenter.x = wid - paddleRadius;
-            }
-            if (paddleCenter.y < hei * 0.7f + paddleRadius) {
-                paddleCenter.y = hei * 0.7f + paddleRadius;
-            } else if (paddleCenter.y > hei - paddleRadius - goalHeight) {
-                paddleCenter.y = hei - paddleRadius - goalHeight;
-            }
-            if(serve && userServe){
-                Vec2f paddleDirection = paddleVel;
-                paddleDirection.normalize();
-                pos = paddleCenter + paddleDirection * (rad + paddleRadius);
-            }
-            if(t_iterator->getY() > hei * 0.3 && t_iterator->getY() < hei * 0.7){
-                serve = false;
+{   
+    if(!serve){
+        touchMoved = true;
+        for( vector<TouchEvent::Touch>::const_iterator t_iterator = event.getTouches().begin(); t_iterator != event.getTouches().end(); ++t_iterator ) {
+            if(t_iterator->getY() > hei/2 ){
+                paddleLast = paddleCenter;
+                paddleCenter = t_iterator->getPos();
+                paddleVel = paddleCenter - paddleLast;
+                if (paddleCenter.x < paddleRadius) {
+                    paddleCenter.x = paddleRadius;
+                } else if (paddleCenter.x > wid - paddleRadius) {
+                    paddleCenter.x = wid - paddleRadius;
+                }
+                if (paddleCenter.y < hei * 0.7f + paddleRadius) {
+                    paddleCenter.y = hei * 0.7f + paddleRadius;
+                } else if (paddleCenter.y > hei - paddleRadius - goalHeight) {
+                    paddleCenter.y = hei - paddleRadius - goalHeight;
+                }
             }
         }
-    }
+    } 
 }
 
 void PongGame::touchesEnded( TouchEvent event)

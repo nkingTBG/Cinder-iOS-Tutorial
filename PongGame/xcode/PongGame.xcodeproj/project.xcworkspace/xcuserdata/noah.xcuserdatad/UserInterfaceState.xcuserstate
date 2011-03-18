@@ -509,9 +509,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>322176505.24178201</real>
-		<string>{4167, 1789}</string>
-		<string>{4767, 0}</string>
+		<real>322177971.24959499</real>
+		<string>{8662, 1910}</string>
+		<string>{9407, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -4280,7 +4280,7 @@
 				<integer>367</integer>
 			</dict>
 			<key>NS.time</key>
-			<real>322176504.86883098</real>
+			<real>322177761.24618</real>
 		</dict>
 		<dict>
 			<key>$classes</key>
@@ -4291,7 +4291,7 @@
 			<key>$classname</key>
 			<string>NSDate</string>
 		</dict>
-		<string>Today at 5:28 PM</string>
+		<string>Today at 5:49 PM</string>
 		<integer>106</integer>
 		<string>PongGame</string>
 		<dict>
@@ -5217,10 +5217,10 @@
 				</dict>
 			</array>
 		</dict>
-		<real>322176505.24364299</real>
-		<string>{4167, 1789}</string>
-		<string>{4767, 0}</string>
-		<string>PongGame::collisions(Vec2f paddle_, Vec2f paddleVel_)</string>
+		<real>322177971.25265002</real>
+		<string>{8662, 1910}</string>
+		<string>{9407, 0}</string>
+		<string>PongGame::draw()</string>
 		<string>Xcode.IDEKit.EditorDocument.SourceCode</string>
 		<dict>
 			<key>$class</key>
@@ -5820,7 +5820,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>507</integer>
+					<integer>510</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
@@ -6203,7 +6203,7 @@
 		<string>IDECollapsedTypes</string>
 		<string>IDERecentFilteringEnabled</string>
 		<string>IDECollapsedGroups</string>
-		<string>{{0, 0}, {259, 779}}</string>
+		<string>{{0, 0}, {259, 780}}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
