@@ -34,9 +34,9 @@ public:
 	virtual void	aiPaddle();
 	
 	Vec2f pos, vel, acc;
-	float wid, hei, rad;
+	float width, height, rad;
 	Vec2f paddleCenter, aiPaddleCenter, paddleLast, aiPaddleLast, paddleVel, aiPaddleVel;
-    Vec2f targetAiPaddleCenter;
+    Vec2f targetAiPaddleCenter, targetPos;
 	float paddleRadius;
 	
 	bool serve, colliding, userServe;
@@ -50,7 +50,7 @@ public:
 	
 	audio::SourceRef sound1, sound2;
     
-    bool touchMoved, trapped;
+    bool touchMoved, trapped, iPad;
 };
 
 void PongGame::setup()
@@ -61,28 +61,35 @@ void PongGame::setup()
     trapped = false;
 	
 	acc = Vec2f(0,0);
-	wid = getWindowWidth();
-	hei = getWindowHeight();
+	width = getWindowWidth();
+	height = getWindowHeight();
+    if(width == 768){
+        iPad = true;   
+    } else {
+        iPad = false;
+    }
 
 	rad = 35.0f;
-	paddleRadius = 50.0f;
-	goalWidth = wid * 0.20f;
+	paddleRadius = 55.0f;
+	goalWidth = width * 0.20f;
 	goalHeight = 8;
 	goalBoxLeft = goalWidth + goalHeight;
-	goalBoxRight = wid - goalWidth - goalHeight;
+	goalBoxRight = width - goalWidth - goalHeight;
 
-    pos = Vec2f(wid/2, hei * 0.8f);
+    pos = Vec2f(width/2, height * 0.8f);
     vel = Vec2f(0,0);
-    paddleCenter = Vec2f(wid/2, hei - paddleRadius - goalHeight);
-    aiPaddleCenter = Vec2f( wid/2, paddleRadius + goalHeight);
+    paddleCenter = Vec2f(width/2, height - paddleRadius - goalHeight);
+    aiPaddleCenter = Vec2f( width/2, paddleRadius + goalHeight);
     if(userServe){
-        targetAiPaddleCenter = Vec2f( wid/2, paddleRadius + goalHeight);
+        targetAiPaddleCenter = Vec2f( width/2, paddleRadius + goalHeight);
+        targetPos = Vec2f(width/2, height * 0.8f);
     } else {
         targetAiPaddleCenter = Vec2f( Rand::randFloat(goalBoxLeft + paddleRadius, goalBoxRight - paddleRadius), paddleRadius + goalHeight);
+        targetPos = Vec2f(width/2, height * 0.2f);
     }
-    
-	easingFactorX = 0.08f;
-    easingFactorY = 0.2f;
+
+	easingFactorX = 0.10f;
+    easingFactorY = 0.20f;
     easingFactorServe = 0.1f;
 	maxSpeed = 50.0f;
 	minSpeed = 3.0f;
@@ -140,7 +147,7 @@ void PongGame::update()
 
 void PongGame::aiPaddle()
 {	
-	float engageThreshY = 1 - ( pos.y / (hei * 0.3f) );
+	float engageThreshY = 1 - ( pos.y / (height * 0.5f) );
     if(engageThreshY < 0 || vel.y > 0){
         engageThreshY = 0;   
     }
@@ -148,35 +155,37 @@ void PongGame::aiPaddle()
 	aiPaddleLast = aiPaddleCenter;
 	
     aiPaddleCenter.x -= (aiPaddleCenter.x - pos.x) * easingFactorX;
-    if(vel.y > 0 && pos.y > hei/2){
+    if(vel.y > 0 && pos.y > height/2){
         aiPaddleCenter.y -= (aiPaddleCenter.y - paddleRadius - goalHeight) * easingFactorY;
     } else {
         aiPaddleCenter.y -= (aiPaddleCenter.y - pos.y) * easingFactorY * engageThreshY;
     }
-	
-    if(aiPaddleCenter.x < paddleRadius + rad * 2){
-		aiPaddleCenter.x = paddleRadius + rad * 2;
-	} else if (aiPaddleCenter.x > wid - paddleRadius - rad * 2) {
-		aiPaddleCenter.x = wid - paddleRadius - rad * 2;
+    if(aiPaddleCenter.x < paddleRadius){
+		aiPaddleCenter.x = paddleRadius;
+	} else if (aiPaddleCenter.x > width - paddleRadius) {
+		aiPaddleCenter.x = width - paddleRadius;
 	}
-    if(aiPaddleCenter.y >= hei * 0.3f){
-        aiPaddleCenter.y = hei * 0.3f;
+    if(aiPaddleCenter.y >= height * 0.3f){
+        aiPaddleCenter.y = height * 0.3f;
     } else if (aiPaddleCenter.y <= paddleRadius + goalHeight){
         aiPaddleCenter.y = paddleRadius + goalHeight;
     }
     
-    if( ( abs(aiPaddleCenter.x - pos.x) <= (paddleRadius + rad) * 1.1f ) && ( pos.x + rad >= wid || pos.x - rad <= 0)  && ( abs(aiPaddleCenter.y - pos.y) <= (paddleRadius + rad) * 1.1f ) ){
+    if( ( abs(aiPaddleCenter.x - pos.x) <= (paddleRadius + rad) * 1.1f ) && ( pos.x + rad >= width || pos.x - rad <= 0)  && ( abs(aiPaddleCenter.y - pos.y) <= (paddleRadius + rad) * 1.1f ) ){
         trapped = true; 
+        if(vel.y < 0){
+            vel.y = 0;
+        }
     }
     
-    if(pos.x < wid - rad * 3 && pos.x > rad * 3 || abs(aiPaddleCenter.y - pos.y) > (paddleRadius * 2.0f ) ){
+    if(pos.x < width - rad * 5 && pos.x > rad * 5 || abs(aiPaddleCenter.y - pos.y) > (paddleRadius * 3.0f ) ){
         trapped = false;   
     }
     
     if(trapped){
         aiPaddleCenter.y -= (aiPaddleCenter.y - paddleRadius - goalHeight) * easingFactorY;
-        aiPaddleCenter.x -= (aiPaddleCenter.x - wid/2) * easingFactorX;
-        vel.y += 0.2f;
+        aiPaddleCenter.x -= (aiPaddleCenter.x - width/2) * easingFactorX;
+        vel.y += 0.15f;
     }
     
     
@@ -230,9 +239,9 @@ void PongGame::boundaries(){
 		vel.x *= -0.65f;
 		pos.x = 0 + rad;
 		audio::Output::play(sound1);
-	} else if(pos.x > wid - rad){
+	} else if(pos.x > width - rad){
 		vel.x *= -0.65f;
-		pos.x = wid - rad;
+		pos.x = width - rad;
 		audio::Output::play(sound1);
 	}
 	
@@ -240,9 +249,9 @@ void PongGame::boundaries(){
 		vel.y *= -0.65f;
 		pos.y = 0 + rad + goalHeight;
 		audio::Output::play(sound1);
-	} else if(pos.y + rad >= hei - goalHeight && (pos.x < goalBoxLeft || pos.x > goalBoxRight)){
+	} else if(pos.y + rad >= height - goalHeight && (pos.x < goalBoxLeft || pos.x > goalBoxRight)){
 		vel.y *= -0.65f;
-		pos.y = hei - goalHeight - rad;
+		pos.y = height - goalHeight - rad;
 		audio::Output::play(sound1);
 	}
 	
@@ -250,13 +259,13 @@ void PongGame::boundaries(){
 	if(pos.y < 0 - rad){
 		userServe = true;
 		userScore++;
-        pos = Vec2f(wid + rad, hei/2);
-        targetAiPaddleCenter = Vec2f( wid/2, paddleRadius + goalHeight);
+        pos = Vec2f(width + rad, height/2);
+        targetAiPaddleCenter = Vec2f( width/2, paddleRadius + goalHeight);
 		audio::Output::play(sound2);
 		serveBall();
-	} else if (pos.y > hei + rad){
+	} else if (pos.y > height + rad){
 		userServe = false;
-        pos = Vec2f(wid + rad, hei/2);
+        pos = Vec2f(width + rad, height/2);
         targetAiPaddleCenter = Vec2f( Rand::randFloat(goalBoxLeft + paddleRadius, goalBoxRight - paddleRadius), paddleRadius + goalHeight);
 		audio::Output::play(sound2);
 		aiScore++;
@@ -267,14 +276,14 @@ void PongGame::boundaries(){
 void PongGame::serveBall(){
 	if(userServe){
 		vel = Vec2f(0,0);
-        Vec2f targetPos = Vec2f(wid/2, hei * 0.8f);
-        Vec2f targetPaddleCenter = Vec2f(wid/2, hei - paddleRadius - goalHeight);
+        targetPos = Vec2f(width/2, height * 0.8f);
+        Vec2f targetPaddleCenter = Vec2f(width/2, height - paddleRadius - goalHeight);
         pos -= (pos - targetPos) * easingFactorServe;
         paddleCenter -= (paddleCenter - targetPaddleCenter) * easingFactorServe;
         aiPaddleCenter -= (aiPaddleCenter - targetAiPaddleCenter) * easingFactorServe;
 	} else {
         vel = Vec2f(0,0);
-        Vec2f targetPos = Vec2f(wid/2, hei * 0.2f);
+        targetPos = Vec2f(width/2, height * 0.2f);
         pos -= (pos - targetPos) * easingFactorServe;
         aiPaddleCenter -= (aiPaddleCenter - targetAiPaddleCenter) * easingFactorServe;
 	}
@@ -289,9 +298,10 @@ void PongGame::resize( ResizeEvent event )
 
 void PongGame::touchesBegan( TouchEvent event)
 {   
-    if(serve){
+    Vec2f tempDist = pos - targetPos;
+    if(serve && tempDist.lengthSquared() < 100 ){
         for( vector<TouchEvent::Touch>::const_iterator t_iterator = event.getTouches().begin(); t_iterator != event.getTouches().end(); ++t_iterator ) {
-            if(t_iterator->getY() > hei * 0.3 && t_iterator->getY() < hei * 0.7){
+            if(t_iterator->getY() > height * 0.3 && t_iterator->getY() < height * 0.7){
                 serve = false;
                 vel = Vec2f(0,0);
             }
@@ -304,19 +314,35 @@ void PongGame::touchesMoved( TouchEvent event)
     if(!serve){
         touchMoved = true;
         for( vector<TouchEvent::Touch>::const_iterator t_iterator = event.getTouches().begin(); t_iterator != event.getTouches().end(); ++t_iterator ) {
-            if(t_iterator->getY() > hei/2 ){
+            if(t_iterator->getY() > height/2 ){
                 paddleLast = paddleCenter;
-                paddleCenter = t_iterator->getPos();
+                if(iPad){
+                    paddleCenter = t_iterator->getPos();
+                } else {
+                    paddleCenter = Vec2f(t_iterator->getX(), t_iterator->getY()- rad);
+                }
+                
                 paddleVel = paddleCenter - paddleLast;
                 if (paddleCenter.x < paddleRadius) {
                     paddleCenter.x = paddleRadius;
-                } else if (paddleCenter.x > wid - paddleRadius) {
-                    paddleCenter.x = wid - paddleRadius;
+                } else if (paddleCenter.x > width - paddleRadius) {
+                    paddleCenter.x = width - paddleRadius;
                 }
-                if (paddleCenter.y < hei * 0.7f + paddleRadius) {
-                    paddleCenter.y = hei * 0.7f + paddleRadius;
-                } else if (paddleCenter.y > hei - paddleRadius - goalHeight) {
-                    paddleCenter.y = hei - paddleRadius - goalHeight;
+                if (paddleCenter.y < height * 0.7f + paddleRadius) {
+                    paddleCenter.y = height * 0.7f + paddleRadius;
+                } else if (paddleCenter.y > height - paddleRadius - goalHeight) {
+                    paddleCenter.y = height - paddleRadius - goalHeight;
+                }
+                
+                if(abs(paddleCenter.y - pos.y) < rad){
+                    Vec2f tempDist = paddleCenter - pos;
+                    if(tempDist.lengthSquared() <= (paddleRadius + rad) * (paddleRadius + rad)){
+                        if (paddleCenter.x < paddleRadius + rad * 2) {
+                            paddleCenter.x = paddleRadius + rad * 2;
+                        } else if (paddleCenter.x > width - paddleRadius - rad * 2) {
+                            paddleCenter.x = width - paddleRadius - rad * 2;
+                        }
+                    }
                 }
             }
         }
@@ -337,8 +363,8 @@ void PongGame::draw()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable( GL_DEPTH_TEST );
 	
-	setMatricesWindowPersp(wid, hei);
-	//setMatricesWindow(wid, hei);
+	setMatricesWindowPersp(width, height);
+	//setMatricesWindow(width, height);
 	glEnable(GL_TEXTURE_2D);
 	
 	
@@ -352,7 +378,7 @@ void PongGame::draw()
 	glLightfv(GL_LIGHT1, GL_AMBIENT, light_RGB);
 	
 	//draw background
-	gl::draw( texture3, Rectf(0,0,wid, hei) );
+	gl::draw( texture3, Rectf(0,0,width, height) );
 	
 	glEnable( GL_LIGHTING );
 	glEnable( GL_LIGHT2 );
@@ -381,25 +407,25 @@ void PongGame::draw()
 	//top
 	color(Colorf(0.0f, 0.0f, 0.0f));
 	drawSolidRect(Rectf(0, 0, goalWidth, goalHeight));
-	drawSolidRect(Rectf(wid, 0, wid - goalWidth, goalHeight));
+	drawSolidRect(Rectf(width, 0, width - goalWidth, goalHeight));
 	drawSolidCircle(Vec2f(goalWidth,0), goalHeight, 24);
-	drawSolidCircle(Vec2f(wid - goalWidth,0), goalHeight, 24);
+	drawSolidCircle(Vec2f(width - goalWidth,0), goalHeight, 24);
 	//bottom
-	drawSolidRect(Rectf(0, hei, goalWidth, hei - goalHeight));
-	drawSolidRect(Rectf(wid, hei, wid - goalWidth, hei - goalHeight));
-	drawSolidCircle(Vec2f(goalWidth, hei), goalHeight, 24);
-	drawSolidCircle(Vec2f(wid - goalWidth, hei), goalHeight, 24);
+	drawSolidRect(Rectf(0, height, goalWidth, height - goalHeight));
+	drawSolidRect(Rectf(width, height, width - goalWidth, height - goalHeight));
+	drawSolidCircle(Vec2f(goalWidth, height), goalHeight, 24);
+	drawSolidCircle(Vec2f(width - goalWidth, height), goalHeight, 24);
 	
 	//draw touch area
 	color( Colorf(0.0f, 0.0f, 0.0f) );
-	drawSolidRect( Rectf(wid, hei, 0, hei  ) );
-	drawString( "Touch Area", Vec2f(50, hei), Colorf(0.3f, 0.3f, 0.3f), Font( "Arial", 40 ) );
+	drawSolidRect( Rectf(width, height, 0, height  ) );
+	drawString( "Touch Area", Vec2f(50, height), Colorf(0.3f, 0.3f, 0.3f), Font( "Arial", 40 ) );
 	
 	if(serve){
-		drawString( "Touch to Serve", Vec2f(wid * 0.25f, hei * 0.4f), Colorf(0, 0, 0), Font( "Arial", 60 ) );
+		drawString( "Touch to Serve", Vec2f(width * 0.25f, height * 0.4f), Colorf(0, 0, 0), Font( "Arial", 60 ) );
 		ostringstream score;
 		score << "Score is " << userScore << " - " << aiScore;
-		drawString( score.str(), Vec2f(wid * 0.25f, hei * 0.3f), Colorf(0, 0, 0), Font( "Arial", 60 ) );
+		drawString( score.str(), Vec2f(width * 0.25f, height * 0.3f), Colorf(0, 0, 0), Font( "Arial", 60 ) );
 		
 	}
 	
