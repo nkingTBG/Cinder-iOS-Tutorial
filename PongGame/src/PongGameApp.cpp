@@ -36,6 +36,7 @@ public:
 	Vec2f pos, vel, acc;
 	float wid, hei, rad;
 	Vec2f paddleCenter, aiPaddleCenter, paddleLast, aiPaddleLast, paddleVel, aiPaddleVel;
+    Vec2f targetAiPaddleCenter;
 	float paddleRadius;
 	
 	bool serve, colliding, userServe;
@@ -49,7 +50,7 @@ public:
 	
 	audio::SourceRef sound1, sound2;
     
-    bool touchMoved;
+    bool touchMoved, trapped;
 };
 
 void PongGame::setup()
@@ -57,6 +58,7 @@ void PongGame::setup()
 	userServe = true;
     serve = true;
     touchMoved = false;
+    trapped = false;
 	
 	acc = Vec2f(0,0);
 	wid = getWindowWidth();
@@ -73,10 +75,15 @@ void PongGame::setup()
     vel = Vec2f(0,0);
     paddleCenter = Vec2f(wid/2, hei - paddleRadius - goalHeight);
     aiPaddleCenter = Vec2f( wid/2, paddleRadius + goalHeight);
+    if(userServe){
+        targetAiPaddleCenter = Vec2f( wid/2, paddleRadius + goalHeight);
+    } else {
+        targetAiPaddleCenter = Vec2f( Rand::randFloat(goalBoxLeft + paddleRadius, goalBoxRight - paddleRadius), paddleRadius + goalHeight);
+    }
     
 	easingFactorX = 0.08f;
     easingFactorY = 0.2f;
-    easingFactorServe = 0.25f;
+    easingFactorServe = 0.1f;
 	maxSpeed = 50.0f;
 	minSpeed = 3.0f;
 	
@@ -157,6 +164,22 @@ void PongGame::aiPaddle()
     } else if (aiPaddleCenter.y <= paddleRadius + goalHeight){
         aiPaddleCenter.y = paddleRadius + goalHeight;
     }
+    
+    if( ( abs(aiPaddleCenter.x - pos.x) <= (paddleRadius + rad) * 1.1f ) && ( pos.x + rad >= wid || pos.x - rad <= 0)  && ( abs(aiPaddleCenter.y - pos.y) <= (paddleRadius + rad) * 1.1f ) ){
+        trapped = true; 
+    }
+    
+    if(pos.x < wid - rad * 3 && pos.x > rad * 3 || abs(aiPaddleCenter.y - pos.y) > (paddleRadius * 2.0f ) ){
+        trapped = false;   
+    }
+    
+    if(trapped){
+        aiPaddleCenter.y -= (aiPaddleCenter.y - paddleRadius - goalHeight) * easingFactorY;
+        aiPaddleCenter.x -= (aiPaddleCenter.x - wid/2) * easingFactorX;
+        vel.y += 0.2f;
+    }
+    
+    
 
     aiPaddleVel = aiPaddleCenter - aiPaddleLast;
 
@@ -227,10 +250,14 @@ void PongGame::boundaries(){
 	if(pos.y < 0 - rad){
 		userServe = true;
 		userScore++;
+        pos = Vec2f(wid + rad, hei/2);
+        targetAiPaddleCenter = Vec2f( wid/2, paddleRadius + goalHeight);
 		audio::Output::play(sound2);
 		serveBall();
 	} else if (pos.y > hei + rad){
 		userServe = false;
+        pos = Vec2f(wid + rad, hei/2);
+        targetAiPaddleCenter = Vec2f( Rand::randFloat(goalBoxLeft + paddleRadius, goalBoxRight - paddleRadius), paddleRadius + goalHeight);
 		audio::Output::play(sound2);
 		aiScore++;
 		serveBall();
@@ -242,14 +269,12 @@ void PongGame::serveBall(){
 		vel = Vec2f(0,0);
         Vec2f targetPos = Vec2f(wid/2, hei * 0.8f);
         Vec2f targetPaddleCenter = Vec2f(wid/2, hei - paddleRadius - goalHeight);
-        Vec2f targetAiPaddleCenter = Vec2f( wid/2, paddleRadius + goalHeight);
         pos -= (pos - targetPos) * easingFactorServe;
         paddleCenter -= (paddleCenter - targetPaddleCenter) * easingFactorServe;
         aiPaddleCenter -= (aiPaddleCenter - targetAiPaddleCenter) * easingFactorServe;
 	} else {
         vel = Vec2f(0,0);
         Vec2f targetPos = Vec2f(wid/2, hei * 0.2f);
-        Vec2f targetAiPaddleCenter = Vec2f( Rand::randFloat(paddleRadius, wid - paddleRadius), paddleRadius + goalHeight);
         pos -= (pos - targetPos) * easingFactorServe;
         aiPaddleCenter -= (aiPaddleCenter - targetAiPaddleCenter) * easingFactorServe;
 	}
@@ -368,13 +393,13 @@ void PongGame::draw()
 	//draw touch area
 	color( Colorf(0.0f, 0.0f, 0.0f) );
 	drawSolidRect( Rectf(wid, hei, 0, hei  ) );
-	drawString( "Touch Area", Vec2f(50, hei), Colorf(0.3f, 0.3f, 0.3f), Font( "Gill Sans", 40 ) );
+	drawString( "Touch Area", Vec2f(50, hei), Colorf(0.3f, 0.3f, 0.3f), Font( "Arial", 40 ) );
 	
 	if(serve){
-		drawString( "Touch to Serve", Vec2f(wid * 0.25f, hei * 0.4f), Colorf(0, 0, 0), Font( "Gill Sans", 60 ) );
+		drawString( "Touch to Serve", Vec2f(wid * 0.25f, hei * 0.4f), Colorf(0, 0, 0), Font( "Arial", 60 ) );
 		ostringstream score;
 		score << "Score is " << userScore << " - " << aiScore;
-		drawString( score.str(), Vec2f(wid * 0.25f, hei * 0.3f), Colorf(0, 0, 0), Font( "Gill Sans", 60 ) );
+		drawString( score.str(), Vec2f(wid * 0.25f, hei * 0.3f), Colorf(0, 0, 0), Font( "Arial", 60 ) );
 		
 	}
 	
