@@ -299,7 +299,7 @@ void PongGame::resize( ResizeEvent event )
 void PongGame::touchesBegan( TouchEvent event)
 {   
     Vec2f tempDist = pos - targetPos;
-    if(serve && tempDist.lengthSquared() < 100 ){
+    if(serve && tempDist.lengthSquared() < 200  ){
         for( vector<TouchEvent::Touch>::const_iterator t_iterator = event.getTouches().begin(); t_iterator != event.getTouches().end(); ++t_iterator ) {
             if(t_iterator->getY() > height * 0.3 && t_iterator->getY() < height * 0.7){
                 serve = false;
